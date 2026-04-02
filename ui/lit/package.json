@@ -66,7 +66,7 @@
               ],
     "funding":  {
                     "type":  "github",
-                    "url":  "https://github.com/sponsors/risklab"
+                    "url":  "https://github.com/sponsors/rpwalsh"
                 },
     "scripts":  {
                     "build":  "tsc -p tsconfig.build.json \u0026\u0026 tsc -p tsconfig.cjs.json \u0026\u0026 node -e \"require(\u0027fs\u0027).cpSync(\u0027src/css/ui.css\u0027,\u0027dist/ui.css\u0027)\"",

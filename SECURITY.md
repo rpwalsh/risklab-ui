@@ -1,5 +1,13 @@
 # Security Policy
 
+## Supported versions
+
+RiskLab UI currently supports the latest `1.x` line.
+
+| Version | Supported |
+| --- | --- |
+| `1.x` | Yes |
+
 ## Reporting
 
 If you find a security issue, do not open a public issue.
