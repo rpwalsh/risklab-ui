@@ -1,0 +1,122 @@
+{
+    "name":  "@risklab/ui",
+    "version":  "1.0.0",
+    "description":  "@risklab/ui - Standalone vanilla Web Component UI library. Root install for the no-framework package surface.",
+    "main":  "dist/cjs/index.js",
+    "module":  "dist/esm/index.js",
+    "types":  "dist/types/index.d.ts",
+    "exports":  {
+                    ".":  {
+                              "types":  "./dist/types/index.d.ts",
+                              "import":  "./dist/esm/index.js",
+                              "require":  "./dist/cjs/index.js"
+                          },
+                    "./vanilla":  {
+                                      "types":  "./dist/types/index.d.ts",
+                                      "import":  "./dist/esm/index.js",
+                                      "require":  "./dist/cjs/index.js"
+                                  },
+                    "./auto":  {
+                                   "types":  "./dist/types/auto.d.ts",
+                                   "import":  "./dist/esm/auto.js",
+                                   "require":  "./dist/cjs/auto.js"
+                               },
+                    "./theme":  {
+                                    "types":  "./dist/types/theme.d.ts",
+                                    "import":  "./dist/esm/theme.js",
+                                    "require":  "./dist/cjs/theme.js"
+                                },
+                    "./layout":  {
+                                     "types":  "./dist/types/layout.d.ts",
+                                     "import":  "./dist/esm/layout.js",
+                                     "require":  "./dist/cjs/layout.js"
+                                 },
+                    "./inputs":  {
+                                     "types":  "./dist/types/inputs.d.ts",
+                                     "import":  "./dist/esm/inputs.js",
+                                     "require":  "./dist/cjs/inputs.js"
+                                 },
+                    "./data-display":  {
+                                           "types":  "./dist/types/data-display.d.ts",
+                                           "import":  "./dist/esm/data-display.js",
+                                           "require":  "./dist/cjs/data-display.js"
+                                       },
+                    "./feedback":  {
+                                       "types":  "./dist/types/feedback.d.ts",
+                                       "import":  "./dist/esm/feedback.js",
+                                       "require":  "./dist/cjs/feedback.js"
+                                   },
+                    "./navigation":  {
+                                         "types":  "./dist/types/navigation.d.ts",
+                                         "import":  "./dist/esm/navigation.js",
+                                         "require":  "./dist/cjs/navigation.js"
+                                     },
+                    "./surfaces":  {
+                                       "types":  "./dist/types/surfaces.d.ts",
+                                       "import":  "./dist/esm/surfaces.js",
+                                       "require":  "./dist/cjs/surfaces.js"
+                                   },
+                    "./utils":  {
+                                    "types":  "./dist/types/utils.d.ts",
+                                    "import":  "./dist/esm/utils.js",
+                                    "require":  "./dist/cjs/utils.js"
+                                },
+                    "./css":  "./dist/ui.css"
+                },
+    "sideEffects":  [
+                        "./dist/esm/index.js",
+                        "./dist/cjs/index.js",
+                        "./dist/esm/auto.js",
+                        "./dist/cjs/auto.js",
+                        "*.css"
+                    ],
+    "customElements":  "dist/custom-elements.json",
+    "files":  [
+                  "dist",
+                  "README.md",
+                  "NOTICE",
+                  "LICENSE.txt"
+              ],
+    "funding":  {
+                    "type":  "github",
+                    "url":  "https://github.com/sponsors/risklab"
+                },
+    "scripts":  {
+                    "build":  "node ../../tools/build-ui-root.mjs",
+                    "clean":  "rimraf dist",
+                    "typecheck":  "tsc --noEmit",
+                    "prepublishOnly":  "npm run clean \u0026\u0026 npm run build"
+                },
+    "keywords":  [
+                     "web-components",
+                     "custom-elements",
+                     "vanilla",
+                     "ui",
+                     "analytics",
+                     "dashboard",
+                     "workbench",
+                     "design-system",
+                     "risklab"
+                 ],
+    "author":  "RiskLab Contributors",
+    "license":  "Apache-2.0",
+    "repository":  {
+                       "type":  "git",
+                       "url":  "https://github.com/rpwalsh/risklab-ui",
+                       "directory":  "packages/ui"
+                   },
+    "homepage":  "https://walshtechgroup.com/risklab/",
+    "bugs":  {
+                 "url":  "https://github.com/rpwalsh/risklab-ui/issues"
+             },
+    "publishConfig":  {
+                          "access":  "public"
+                      },
+    "devDependencies":  {
+                            "rimraf":  "^6.0.0",
+                            "typescript":  "^5.7.0"
+                        },
+    "engines":  {
+                    "node":  "\u003e=20.0.0"
+                }
+}

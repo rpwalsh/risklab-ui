@@ -1,0 +1,112 @@
+{
+    "name":  "@risklab/ui-svelte",
+    "version":  "1.0.0",
+    "description":  "@risklab/ui-svelte — Svelte 5 component library. Runes-powered. Same design token system as @risklab/charts and sibling UI packages.",
+    "svelte":  "./dist/index.js",
+    "types":  "./dist/index.d.ts",
+    "type":  "module",
+    "exports":  {
+                    ".":  {
+                              "types":  "./dist/index.d.ts",
+                              "svelte":  "./dist/index.js",
+                              "default":  "./dist/index.js"
+                          },
+                    "./theme":  {
+                                    "types":  "./dist/theme/index.d.ts",
+                                    "svelte":  "./dist/theme/index.js",
+                                    "default":  "./dist/theme/index.js"
+                                },
+                    "./layout":  {
+                                     "types":  "./dist/layout/index.d.ts",
+                                     "svelte":  "./dist/layout/index.js",
+                                     "default":  "./dist/layout/index.js"
+                                 },
+                    "./inputs":  {
+                                     "types":  "./dist/inputs/index.d.ts",
+                                     "svelte":  "./dist/inputs/index.js",
+                                     "default":  "./dist/inputs/index.js"
+                                 },
+                    "./data-display":  {
+                                           "types":  "./dist/data-display/index.d.ts",
+                                           "svelte":  "./dist/data-display/index.js",
+                                           "default":  "./dist/data-display/index.js"
+                                       },
+                    "./feedback":  {
+                                       "types":  "./dist/feedback/index.d.ts",
+                                       "svelte":  "./dist/feedback/index.js",
+                                       "default":  "./dist/feedback/index.js"
+                                   },
+                    "./navigation":  {
+                                         "types":  "./dist/navigation/index.d.ts",
+                                         "svelte":  "./dist/navigation/index.js",
+                                         "default":  "./dist/navigation/index.js"
+                                     },
+                    "./surfaces":  {
+                                       "types":  "./dist/surfaces/index.d.ts",
+                                       "svelte":  "./dist/surfaces/index.js",
+                                       "default":  "./dist/surfaces/index.js"
+                                   },
+                    "./utils":  {
+                                    "types":  "./dist/utils/index.d.ts",
+                                    "svelte":  "./dist/utils/index.js",
+                                    "default":  "./dist/utils/index.js"
+                                },
+                    "./css":  "./dist/ui.css"
+                },
+    "sideEffects":  [
+                        "*.css"
+                    ],
+    "files":  [
+                  "dist",
+                  "README.md",
+                  "LICENSE",
+                  "NOTICE",
+                  "LICENSE.txt"
+              ],
+    "funding":  {
+                    "type":  "github",
+                    "url":  "https://github.com/sponsors/risklab"
+                },
+    "scripts":  {
+                    "build":  "svelte-package -i src -o dist \u0026\u0026 node -e \"import(\u0027fs\u0027).then(f=\u003ef.cpSync(\u0027src/css/ui.css\u0027,\u0027dist/ui.css\u0027))\"",
+                    "dev":  "svelte-package -i src -o dist --watch",
+                    "test":  "vitest run --passWithNoTests",
+                    "clean":  "rimraf dist",
+                    "typecheck":  "svelte-check --tsconfig ./tsconfig.json",
+                    "prepublishOnly":  "npm run clean \u0026\u0026 npm run build"
+                },
+    "keywords":  [
+                     "svelte",
+                     "svelte5",
+                     "runes",
+                     "components",
+                     "ui",
+                     "design-system",
+                     "risklab"
+                 ],
+    "author":  "RiskLab Contributors",
+    "license":  "Apache-2.0",
+    "repository":  {
+                       "type":  "git",
+                       "url":  "https://github.com/rpwalsh/risklab-ui",
+                       "directory":  "ui/svelte"
+                   },
+    "homepage":  "https://walshtechgroup.com/risklab/",
+    "bugs":  {
+                 "url":  "https://github.com/rpwalsh/risklab-ui/issues"
+             },
+    "peerDependencies":  {
+                             "svelte":  "\u003e=5.0.0"
+                         },
+    "devDependencies":  {
+                            "@sveltejs/package":  "^2.3.0",
+                            "svelte":  "^5.0.0",
+                            "svelte-check":  "^4.0.0",
+                            "rimraf":  "^6.0.0",
+                            "typescript":  "^5.7.0",
+                            "vitest":  "^3.0.0"
+                        },
+    "engines":  {
+                    "node":  "\u003e=20.0.0"
+                }
+}

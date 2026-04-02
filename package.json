@@ -1,0 +1,80 @@
+{
+    "name":  "risklab-ui-workspace",
+    "version":  "1.0.0",
+    "private":  true,
+    "description":  "Workspace repo for the RiskLab UI package family.",
+    "workspaces":  [
+                       "packages/ui",
+                       "ui/react",
+                       "ui/vanilla",
+                       "ui/vue",
+                       "ui/svelte",
+                       "ui/angular",
+                       "ui/lit",
+                       "ui/solid"
+                   ],
+    "scripts":  {
+                    "lint":  "eslint packages ui tests tools --ext .ts,.tsx,.js,.mjs",
+                    "typecheck:ui":  "npm run typecheck --workspace=packages/ui",
+                    "typecheck:ui-vanilla":  "npm run typecheck --workspace=ui/vanilla",
+                    "typecheck:ui-react":  "npm run typecheck --workspace=ui/react",
+                    "typecheck:ui-vue":  "npm run typecheck --workspace=ui/vue",
+                    "typecheck:ui-svelte":  "npm run typecheck --workspace=ui/svelte",
+                    "typecheck:ui-angular":  "npm run typecheck --workspace=ui/angular",
+                    "typecheck:ui-lit":  "npm run typecheck --workspace=ui/lit",
+                    "typecheck:ui-solid":  "npm run typecheck --workspace=ui/solid",
+                    "typecheck:all":  "npm run typecheck --workspace=packages/ui \u0026\u0026 npm run typecheck --workspace=ui/vanilla \u0026\u0026 npm run typecheck --workspace=ui/react \u0026\u0026 npm run typecheck --workspace=ui/vue \u0026\u0026 npm run typecheck --workspace=ui/svelte \u0026\u0026 npm run typecheck --workspace=ui/angular \u0026\u0026 npm run typecheck --workspace=ui/lit \u0026\u0026 npm run typecheck --workspace=ui/solid",
+                    "test:all":  "npm run test --workspace=ui/vanilla \u0026\u0026 npm run test --workspace=ui/react \u0026\u0026 npm run test --workspace=ui/vue \u0026\u0026 npm run test --workspace=ui/svelte \u0026\u0026 npm run test --workspace=ui/angular \u0026\u0026 npm run test --workspace=ui/lit \u0026\u0026 npm run test --workspace=ui/solid",
+                    "build:ui-core":  "npm run build --workspace=ui/vanilla \u0026\u0026 npm run build --workspace=packages/ui",
+                    "build:ui-react":  "npm run build --workspace=ui/react",
+                    "build:ui-vue":  "npm run build --workspace=ui/vue",
+                    "build:ui-svelte":  "npm run build --workspace=ui/svelte",
+                    "build:ui-angular":  "npm run build --workspace=ui/angular",
+                    "build:ui-lit":  "npm run build --workspace=ui/lit",
+                    "build:ui-solid":  "npm run build --workspace=ui/solid",
+                    "build:all":  "npm run build --workspace=ui/vanilla \u0026\u0026 npm run build --workspace=packages/ui \u0026\u0026 npm run build --workspace=ui/react \u0026\u0026 npm run build --workspace=ui/vue \u0026\u0026 npm run build --workspace=ui/svelte \u0026\u0026 npm run build --workspace=ui/angular \u0026\u0026 npm run build --workspace=ui/lit \u0026\u0026 npm run build --workspace=ui/solid",
+                    "pack:all":  "npm pack --dry-run --workspace=packages/ui \u0026\u0026 npm pack --dry-run --workspace=ui/vanilla \u0026\u0026 npm pack --dry-run --workspace=ui/react \u0026\u0026 npm pack --dry-run --workspace=ui/vue \u0026\u0026 npm pack --dry-run --workspace=ui/svelte \u0026\u0026 npm pack --dry-run --workspace=ui/angular \u0026\u0026 npm pack --dry-run --workspace=ui/lit \u0026\u0026 npm pack --dry-run --workspace=ui/solid",
+                    "smoke:install":  "node ./tools/smoke-install.mjs",
+                    "release:check":  "npm run lint \u0026\u0026 npm run typecheck:all \u0026\u0026 npm run test:all \u0026\u0026 npm run build:all \u0026\u0026 npm run pack:all \u0026\u0026 npm run smoke:install"
+                },
+    "keywords":  [
+                     "risklab",
+                     "ui",
+                     "design-system",
+                     "components",
+                     "web-components",
+                     "react",
+                     "vue",
+                     "svelte",
+                     "angular",
+                     "lit",
+                     "solid"
+                 ],
+    "author":  "RiskLab Contributors",
+    "license":  "Apache-2.0",
+    "repository":  {
+                       "type":  "git",
+                       "url":  "https://github.com/rpwalsh/risklab-ui",
+                       "directory":  "."
+                   },
+    "homepage":  "https://walshtechgroup.com/risklab/",
+    "bugs":  {
+                 "url":  "https://github.com/rpwalsh/risklab-ui/issues"
+             },
+    "devDependencies":  {
+                            "@eslint/js":  "^9.0.0",
+                            "@types/node":  "^25.5.0",
+                            "@types/react":  "^19.0.0",
+                            "@types/react-dom":  "^19.0.0",
+                            "eslint":  "^9.0.0",
+                            "eslint-plugin-react-hooks":  "^7.0.1",
+                            "jsdom":  "^29.0.0",
+                            "rimraf":  "^6.0.0",
+                            "typescript":  "^5.7.0",
+                            "typescript-eslint":  "^8.0.0",
+                            "vitest":  "^3.0.0"
+                        },
+    "engines":  {
+                    "node":  "\u003e=20.0.0"
+                }
+}

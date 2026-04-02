@@ -1,0 +1,25 @@
+import type { Snippet } from 'svelte';
+type $$ComponentProps = {
+    as?: string;
+    p?: string;
+    px?: string;
+    py?: string;
+    pt?: string;
+    pr?: string;
+    pb?: string;
+    pl?: string;
+    m?: string;
+    mx?: string;
+    my?: string;
+    mt?: string;
+    mr?: string;
+    mb?: string;
+    ml?: string;
+    display?: string;
+    bg?: string;
+    radius?: string;
+    children?: Snippet;
+};
+declare const Box: import("svelte").Component<$$ComponentProps, {}, "">;
+type Box = ReturnType<typeof Box>;
+export default Box;

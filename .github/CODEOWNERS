@@ -1,0 +1,9 @@
+# Default owners for everything
+* @risklab/core-team
+
+/packages/ui/         @risklab/core-team
+/ui/                  @risklab/core-team
+/tests/               @risklab/core-team
+/tools/               @risklab/core-team
+/.github/             @risklab/core-team
+/package.json         @risklab/core-team

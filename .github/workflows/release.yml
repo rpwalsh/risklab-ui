@@ -1,0 +1,57 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  release:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    environment: npm
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Release preflight
+        run: npm run release:check
+
+      - name: Publish UI packages
+        run: |
+          for workspace in ui/vanilla ui/react ui/vue ui/svelte ui/angular ui/lit ui/solid packages/ui; do
+            npm publish --workspace="$workspace" --provenance
+          done
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create release artifacts
+        run: |
+          mkdir -p artifacts/release
+          npm pack --workspace=packages/ui --pack-destination artifacts/release
+          npm pack --workspace=ui/vanilla --pack-destination artifacts/release
+          npm pack --workspace=ui/react --pack-destination artifacts/release
+          npm pack --workspace=ui/vue --pack-destination artifacts/release
+          npm pack --workspace=ui/svelte --pack-destination artifacts/release
+          npm pack --workspace=ui/angular --pack-destination artifacts/release
+          npm pack --workspace=ui/lit --pack-destination artifacts/release
+          npm pack --workspace=ui/solid --pack-destination artifacts/release
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            artifacts/release/*.tgz
