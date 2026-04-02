@@ -12,6 +12,7 @@ const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 
 const workspaceSpecs = [
   { name: '@risklab/ui', workspace: 'packages/ui' },
+  { name: '@risklab/workbench', workspace: 'packages/workbench' },
   { name: '@risklab/ui-vanilla', workspace: 'ui/vanilla' },
   { name: '@risklab/ui-react', workspace: 'ui/react' },
   { name: '@risklab/ui-vue', workspace: 'ui/vue' },
@@ -31,6 +32,13 @@ const scenarios = [
     resolve: ['@risklab/ui', '@risklab/ui/vanilla', '@risklab/ui/auto', '@risklab/ui/css'],
     installed: ['@risklab/ui'],
     missing: ['@risklab/ui-react', 'react', 'react-dom'],
+  },
+  {
+    name: 'workbench-shell',
+    install: ['@risklab/workbench'],
+    resolve: ['@risklab/workbench', '@risklab/workbench/state', '@risklab/workbench/theme', '@risklab/workbench/css'],
+    installed: ['@risklab/workbench', 'react'],
+    missing: ['@risklab/ui-react', '@risklab/charts-react'],
   },
   {
     name: 'ui-framework-packages',

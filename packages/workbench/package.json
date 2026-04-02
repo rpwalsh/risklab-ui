@@ -1,0 +1,91 @@
+{
+  "name": "@risklab/workbench",
+  "version": "1.0.0",
+  "description": "@risklab/workbench - React/TypeScript analytical shell primitives and coordinated workbench state for serious operator-facing software.",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    },
+    "./state": {
+      "types": "./dist/types/state.d.ts",
+      "import": "./dist/esm/state.js",
+      "require": "./dist/cjs/state.js"
+    },
+    "./theme": {
+      "types": "./dist/types/theme.d.ts",
+      "import": "./dist/esm/theme.js",
+      "require": "./dist/cjs/theme.js"
+    },
+    "./css": "./dist/workbench.css"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "NOTICE",
+    "LICENSE.txt"
+  ],
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/rpwalsh"
+  },
+  "scripts": {
+    "build": "rimraf dist && tsc -p tsconfig.build.json && tsc -p tsconfig.cjs.json && node -e \"require('fs').cpSync('src/css/workbench.css','dist/workbench.css')\"",
+    "dev": "tsc -p tsconfig.build.json --watch",
+    "test": "vitest run --passWithNoTests",
+    "test:watch": "vitest",
+    "clean": "rimraf dist",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "keywords": [
+    "react",
+    "typescript",
+    "analytical-applications",
+    "operator-console",
+    "workbench",
+    "internal-tools",
+    "risk",
+    "ops",
+    "monitoring",
+    "dashboard",
+    "state-management",
+    "layout",
+    "shell",
+    "risklab"
+  ],
+  "author": "RiskLab Contributors",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rpwalsh/risklab-ui",
+    "directory": "packages/workbench"
+  },
+  "homepage": "https://walshtechgroup.com/risklab/",
+  "bugs": {
+    "url": "https://github.com/rpwalsh/risklab-ui/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "rimraf": "^6.0.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

@@ -8,6 +8,7 @@ of predictable integration surfaces.
 ### Adopt now
 
 - `@risklab/ui` for vanilla or Web Component environments
+- `@risklab/workbench` for React analytical shells and coordinated layout
 - `@risklab/ui-react` for React applications
 - CSS custom properties as the shared token contract
 
@@ -47,6 +48,14 @@ Example host override:
 ```
 
 Dark mode is controlled with `[data-ui-theme="dark"]` or `.ui-dark`.
+
+## Workbench token strategy
+
+`@risklab/workbench` uses CSS custom properties for shell chrome, workspace
+spacing, panel surfaces, borders, accents, and inspector/nav widths.
+
+That keeps the workbench layer compatible with existing design systems without
+creating a separate wrapper package for every enterprise stack.
 
 ## Existing compatibility guidance
 

@@ -10,6 +10,7 @@ npm install
 
 ```bash
 npm run typecheck:all
+npm run test
 npm run test:all
 npm run build:all
 ```
@@ -25,6 +26,8 @@ npm run release:check
 - Keep package boundaries clear.
 - Keep public export maps truthful.
 - Keep docs and examples on public package imports, not repo-private paths.
+- Keep framework packages as standalone package-owned implementations, not thin wrappers.
+- Keep the workbench shell primitives and state model package-owned and honest.
 - Add or update tests when behavior changes.
 - Keep token and CSS variable behavior stable across packages.
 - Do not add demo-only behavior to package surfaces.
