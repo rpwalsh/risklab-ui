@@ -3,6 +3,10 @@
 RiskLab UI and Workbench is a package family for analytical application shells,
 operator workbenches, dashboards, and data-heavy frontend products.
 
+If you want guided mission starters and domain-shaped workbench templates, pair
+this repo with `@risklab/mission` and the matching `@risklab/mission-*`
+package from the standalone RiskLab Mission repo.
+
 This repo ships:
 
 - `@risklab/ui`: the default standalone vanilla Web Component package
@@ -15,6 +19,7 @@ This repo ships:
 | Use case | Install | Notes |
 | --- | --- | --- |
 | React analytical workbench | `npm install @risklab/workbench @risklab/charts @risklab/charts-react` | Recommended platform path for serious analytical apps |
+| React mission starter | `npm install @risklab/mission @risklab/mission-react @risklab/workbench @risklab/ui-react @risklab/charts @risklab/charts-react` | Use the mission repo when you want guided mission templates on top of the base shell |
 | Vanilla or Web Components UI | `npm install @risklab/ui` | Default no-framework package |
 | React UI | `npm install @risklab/ui-react` | Recommended app-team path |
 | Vue, Svelte, Angular, Lit, Solid | install the matching `@risklab/ui-*` package | Keep framework intent explicit during review |
@@ -156,6 +161,8 @@ it.
 - `@risklab/ui` and `@risklab/ui-react` share the same token model.
 - `@risklab/workbench` uses its own CSS-variable shell tokens so host products
   can translate workbench chrome without forking components.
+- `@risklab/mission` sits above this repo as an optional mission/workbench
+  layer. It should consume these packages rather than duplicate them.
 - Tailwind, CSS Modules, and host design-token systems can wrap the package
   without needing a dedicated wrapper package.
 - Dark mode is opt-in through `[data-ui-theme="dark"]` or `.ui-dark`.
