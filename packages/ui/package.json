@@ -115,7 +115,7 @@
                       },
     "devDependencies":  {
                             "rimraf":  "^6.0.0",
-                            "typescript":  "^5.7.0"
+                            "typescript":  "^6.0.2"
                         },
     "engines":  {
                     "node":  "\u003e=20.0.0"
