@@ -104,7 +104,7 @@
                             "@angular/common":  "^19.0.0",
                             "@angular/compiler":  "^19.0.0",
                             "rimraf":  "^6.0.0",
-                            "typescript":  "^5.7.0",
+                            "typescript":  "^6.0.2",
                             "vitest":  "^3.0.0",
                             "zone.js":  "^0.15.0",
                             "rxjs":  "^7.8.0"
