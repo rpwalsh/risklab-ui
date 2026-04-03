@@ -1,180 +1,34 @@
-# RiskLab UI and Workbench
+# RiskLab UI
 
-RiskLab UI and Workbench is a package family for analytical application shells,
-operator workbenches, dashboards, and data-heavy frontend products.
+RiskLab UI is the split-repo home for RiskLab's application-shell and UI
+packages. This repo owns the shared UI primitives, the React workbench shell,
+and the framework adapters that sit under the public demo site at
+`https://rpwalsh.github.io/`.
 
-If you want guided mission starters and domain-shaped workbench templates, pair
-this repo with `@risklab/mission` and the matching `@risklab/mission-*`
-package from the standalone RiskLab Mission repo.
+## Packages
 
-This repo ships:
+- `@risklab/ui`: vanilla and Web Component UI surface
+- `@risklab/workbench`: React-first analytical shell and coordinated state
+- `@risklab/ui-react`: recommended React component package
+- `@risklab/ui-vue`, `@risklab/ui-svelte`, `@risklab/ui-angular`,
+  `@risklab/ui-lit`, `@risklab/ui-solid`: framework-specific adapters
 
-- `@risklab/ui`: the default standalone vanilla Web Component package
-- `@risklab/workbench`: the React-first analytical shell and coordinated state layer
-- `@risklab/ui-react`: the recommended React UI surface
-- framework-specific UI packages for Vue, Svelte, Angular, Lit, and Solid
+## Install
 
-## Package chooser
+| Use case | Install |
+| --- | --- |
+| React workbench | `npm install @risklab/workbench @risklab/charts @risklab/charts-react` |
+| React UI | `npm install @risklab/ui-react` |
+| Vanilla or Web Components | `npm install @risklab/ui` |
+| Other frameworks | install the matching `@risklab/ui-*` package |
 
-| Use case | Install | Notes |
-| --- | --- | --- |
-| React analytical workbench | `npm install @risklab/workbench @risklab/charts @risklab/charts-react` | Recommended platform path for serious analytical apps |
-| React mission starter | `npm install @risklab/mission @risklab/mission-react @risklab/workbench @risklab/ui-react @risklab/charts @risklab/charts-react` | Use the mission repo when you want guided mission templates on top of the base shell |
-| Vanilla or Web Components UI | `npm install @risklab/ui` | Default no-framework package |
-| React UI | `npm install @risklab/ui-react` | Recommended app-team path |
-| Vue, Svelte, Angular, Lit, Solid | install the matching `@risklab/ui-*` package | Keep framework intent explicit during review |
+## Quick links
 
-## Five-minute quick starts
-
-### React workbench
-
-```bash
-npm install @risklab/workbench @risklab/charts @risklab/charts-react
-```
-
-```tsx
-import "@risklab/workbench/css";
-import { Chart } from "@risklab/charts-react";
-import {
-  EntityInspector,
-  FilterBar,
-  PanelLayout,
-  QueryBar,
-  TimeRangeControl,
-  WorkbenchPanel,
-  WorkbenchProvider,
-  WorkbenchShell,
-} from "@risklab/workbench";
-
-const series = [
-  {
-    id: "latency",
-    name: "P95 latency",
-    type: "line",
-    data: [
-      { x: "09:00", y: 112 },
-      { x: "10:00", y: 96 },
-      { x: "11:00", y: 104 },
-    ],
-  },
-];
-
-export function OpsWorkbench() {
-  return (
-    <WorkbenchProvider initialState={{ timeWindow: { preset: "24h" } }}>
-      <WorkbenchShell
-        topbar={
-          <>
-            <QueryBar />
-            <FilterBar
-              filters={[
-                {
-                  key: "severity",
-                  label: "Severity",
-                  options: [
-                    { label: "Critical", value: "critical" },
-                    { label: "Warning", value: "warning" },
-                  ],
-                },
-              ]}
-            />
-            <TimeRangeControl />
-          </>
-        }
-        inspector={<EntityInspector />}
-      >
-        <PanelLayout minColumnWidth={360}>
-          <WorkbenchPanel panelId="latency" title="Service latency">
-            <Chart
-              title="P95 latency"
-              height={320}
-              series={series}
-              yAxis={{ title: { text: "Milliseconds" } }}
-            />
-          </WorkbenchPanel>
-        </PanelLayout>
-      </WorkbenchShell>
-    </WorkbenchProvider>
-  );
-}
-```
-
-### Vanilla UI
-
-```bash
-npm install @risklab/ui
-```
-
-```ts
-import "@risklab/ui/auto";
-import "@risklab/ui/css";
-
-document.body.innerHTML = `
-  <div class="ui-root">
-    <ui-card>
-      <ui-stack gap="12px">
-        <ui-text-field label="Search" placeholder="Find assets"></ui-text-field>
-        <ui-button variant="filled" color="primary">Run report</ui-button>
-      </ui-stack>
-    </ui-card>
-  </div>
-`;
-```
-
-### React
-
-```bash
-npm install @risklab/ui-react
-```
-
-```tsx
-import "@risklab/ui-react/css";
-import { Button, Card, Stack, TextField } from "@risklab/ui-react";
-
-export function FiltersCard() {
-  return (
-    <Card>
-      <Stack gap="12px">
-        <TextField label="Search" placeholder="Find accounts" />
-        <Button color="primary">Apply filters</Button>
-      </Stack>
-    </Card>
-  );
-}
-```
-
-More working references:
-
-- [examples/quickstart-workbench.tsx](examples/quickstart-workbench.tsx)
-- [docs/getting-started.md](docs/getting-started.md)
-- [docs/design-system-integration.md](docs/design-system-integration.md)
-- [examples/quickstart-react.tsx](examples/quickstart-react.tsx)
-- [examples/quickstart-vanilla.ts](examples/quickstart-vanilla.ts)
-
-## Design-system integration
-
-RiskLab UI is designed to fit into an existing design system rather than replace
-it.
-
-- CSS custom properties are the contract for color, spacing, radius,
-  typography, shadow, and focus tokens.
-- `@risklab/ui` and `@risklab/ui-react` share the same token model.
-- `@risklab/workbench` uses its own CSS-variable shell tokens so host products
-  can translate workbench chrome without forking components.
-- `@risklab/mission` sits above this repo as an optional mission/workbench
-  layer. It should consume these packages rather than duplicate them.
-- Tailwind, CSS Modules, and host design-token systems can wrap the package
-  without needing a dedicated wrapper package.
-- Dark mode is opt-in through `[data-ui-theme="dark"]` or `.ui-dark`.
-
-## Trust and release posture
-
-- Apache 2.0 licensing with `LICENSE`, `LICENSE.txt`, and `NOTICE`
-- `SECURITY.md` with private disclosure guidance
-- `CONTRIBUTING.md` with validation expectations
-- no install-time `dependencies` in the publishable package set
-- `npm run release:check` validates lint, types, tests, packing, and packed
-  install smoke checks
+- Live demos: `https://rpwalsh.github.io/`
+- Getting started: [docs/getting-started.md](docs/getting-started.md)
+- Design-system guidance: [docs/design-system-integration.md](docs/design-system-integration.md)
+- Security reporting: [SECURITY.md](SECURITY.md)
+- Contribution guide: [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Local development
 
@@ -183,12 +37,14 @@ Requirements:
 - Node.js `>=20`
 - npm `>=10`
 
-Useful commands:
+Core validation:
 
 ```bash
-npm run test
-npm run build:all
+npm install
+npm run lint
+npm run typecheck:all
 npm run test:all
+npm run build:all
 npm run release:check
 ```
 

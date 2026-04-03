@@ -62,6 +62,6 @@ jobs:
       - run: npm ci
       - run: npm run release:check
       - run: |
-          for workspace in ui/vanilla ui/react ui/vue ui/svelte ui/angular ui/lit ui/solid packages/ui; do
+          for workspace in ui/vanilla ui/react ui/vue ui/svelte ui/angular ui/lit ui/solid packages/ui packages/workbench; do
             npm publish --dry-run --workspace="$workspace"
           done
