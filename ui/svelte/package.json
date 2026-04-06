@@ -100,7 +100,7 @@
                          },
     "devDependencies":  {
                             "@sveltejs/package":  "^2.3.0",
-                            "svelte":  "^5.0.0",
+                            "svelte":  "^5.55.1",
                             "svelte-check":  "^4.0.0",
                             "rimraf":  "^6.0.0",
                             "typescript":  "^5.7.0",
