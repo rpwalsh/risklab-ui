@@ -1,4 +1,4 @@
-// @risklab/ui — Typography component
+// @risklab/ui â€” Typography component
 
 import {
   forwardRef,
@@ -47,7 +47,7 @@ export interface TypographyProps
   variant?: TypographyVariant;
   /** Override the rendered element type. Auto-derived from variant if not set. */
   as?: ElementType;
-  /** Text color — a ColorVariant token, 'inherit', or arbitrary CSS color. */
+  /** Text color â€” a ColorVariant token, 'inherit', or arbitrary CSS color. */
   color?: ColorVariant | 'inherit' | (string & {});
   /** Text alignment. */
   align?: TypographyAlign;
@@ -61,7 +61,7 @@ export interface TypographyProps
   italic?: boolean;
   /** Render with underline. */
   underline?: boolean;
-  /** Multi-line truncation — clamp to N lines. */
+  /** Multi-line truncation â€” clamp to N lines. */
   lineClamp?: number;
   children?: ReactNode;
 }

@@ -1,4 +1,4 @@
-// @risklab/ui � ToggleButton & ToggleButtonGroup components
+// @risklab/ui — ToggleButton & ToggleButtonGroup components
 
 import {
   forwardRef,
@@ -39,7 +39,7 @@ export interface ToggleButtonGroupProps
     Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'style' | 'className'> {
   /** Controlled value(s). Single string for exclusive, string[] for multi-select. */
   value?: string | string[];
-  /** Change handler � receives the new value or value array. */
+  /** Change handler — receives the new value or value array. */
   onChange?: (value: string | string[]) => void;
   /** Size passed to children. */
   size?: SizeVariant;
@@ -127,7 +127,7 @@ export const ToggleButtonGroup = forwardRef<HTMLDivElement, ToggleButtonGroupPro
 );
 
 // ---------------------------------------------------------------------------
-// ToggleButton � Types
+// ToggleButton — Types
 // ---------------------------------------------------------------------------
 
 export interface ToggleButtonProps

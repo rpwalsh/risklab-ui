@@ -1,4 +1,4 @@
-// @risklab/ui — Default Light Theme
+// @risklab/ui â€” Default Light Theme
 // Clean slate gray + indigo primary palette. Tailwind-inspired colors.
 
 import type { UITheme } from './types';
@@ -8,7 +8,7 @@ export const lightTheme: UITheme = {
   name: 'UI Light',
   mode: 'light',
   tokens: {
-    // Primary — Indigo
+    // Primary â€” Indigo
     primary: {
       50:  '#eef2ff',
       100: '#e0e7ff',
@@ -23,7 +23,7 @@ export const lightTheme: UITheme = {
       950: '#1e1b4b',
     },
 
-    // Secondary — Violet
+    // Secondary â€” Violet
     secondary: {
       50:  '#f5f3ff',
       100: '#ede9fe',
@@ -38,7 +38,7 @@ export const lightTheme: UITheme = {
       950: '#2e1065',
     },
 
-    // Neutral — Slate
+    // Neutral â€” Slate
     neutral: {
       50:  '#f8fafc',
       100: '#f1f5f9',
@@ -53,7 +53,7 @@ export const lightTheme: UITheme = {
       950: '#020617',
     },
 
-    // Error — Red
+    // Error â€” Red
     error: {
       50:  '#fef2f2',
       100: '#fee2e2',
@@ -68,7 +68,7 @@ export const lightTheme: UITheme = {
       950: '#450a0a',
     },
 
-    // Warning — Amber
+    // Warning â€” Amber
     warning: {
       50:  '#fffbeb',
       100: '#fef3c7',
@@ -83,7 +83,7 @@ export const lightTheme: UITheme = {
       950: '#451a03',
     },
 
-    // Success — Emerald
+    // Success â€” Emerald
     success: {
       50:  '#ecfdf5',
       100: '#d1fae5',
@@ -98,7 +98,7 @@ export const lightTheme: UITheme = {
       950: '#022c22',
     },
 
-    // Info — Sky
+    // Info â€” Sky
     info: {
       50:  '#f0f9ff',
       100: '#e0f2fe',

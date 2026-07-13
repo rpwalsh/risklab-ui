@@ -1,110 +1,117 @@
 {
-    "name":  "@risklab/ui-solid",
-    "version":  "1.0.0",
-    "description":  "@risklab/ui-solid — SolidJS component library. Fine-grained reactivity. Same design token system as @risklab/charts and sibling UI packages.",
-    "main":  "dist/cjs/index.js",
-    "module":  "dist/esm/index.js",
-    "types":  "dist/types/index.d.ts",
-    "exports":  {
-                    ".":  {
-                              "types":  "./dist/types/index.d.ts",
-                              "import":  "./dist/esm/index.js",
-                              "require":  "./dist/cjs/index.js"
-                          },
-                    "./theme":  {
-                                    "types":  "./dist/types/theme/index.d.ts",
-                                    "import":  "./dist/esm/theme/index.js",
-                                    "require":  "./dist/cjs/theme/index.js"
-                                },
-                    "./layout":  {
-                                     "types":  "./dist/types/layout/index.d.ts",
-                                     "import":  "./dist/esm/layout/index.js",
-                                     "require":  "./dist/cjs/layout/index.js"
-                                 },
-                    "./inputs":  {
-                                     "types":  "./dist/types/inputs/index.d.ts",
-                                     "import":  "./dist/esm/inputs/index.js",
-                                     "require":  "./dist/cjs/inputs/index.js"
-                                 },
-                    "./data-display":  {
-                                           "types":  "./dist/types/data-display/index.d.ts",
-                                           "import":  "./dist/esm/data-display/index.js",
-                                           "require":  "./dist/cjs/data-display/index.js"
-                                       },
-                    "./feedback":  {
-                                       "types":  "./dist/types/feedback/index.d.ts",
-                                       "import":  "./dist/esm/feedback/index.js",
-                                       "require":  "./dist/cjs/feedback/index.js"
-                                   },
-                    "./navigation":  {
-                                         "types":  "./dist/types/navigation/index.d.ts",
-                                         "import":  "./dist/esm/navigation/index.js",
-                                         "require":  "./dist/cjs/navigation/index.js"
-                                     },
-                    "./surfaces":  {
-                                       "types":  "./dist/types/surfaces/index.d.ts",
-                                       "import":  "./dist/esm/surfaces/index.js",
-                                       "require":  "./dist/cjs/surfaces/index.js"
-                                   },
-                    "./utils":  {
-                                    "types":  "./dist/types/utils/index.d.ts",
-                                    "import":  "./dist/esm/utils/index.js",
-                                    "require":  "./dist/cjs/utils/index.js"
-                                },
-                    "./css":  "./dist/ui.css"
-                },
-    "sideEffects":  [
-                        "*.css"
-                    ],
-    "files":  [
-                  "dist",
-                  "README.md",
-                  "LICENSE",
-                  "NOTICE",
-                  "LICENSE.txt"
-              ],
-    "funding":  {
-                    "type":  "github",
-                    "url":  "https://github.com/sponsors/rpwalsh"
-                },
-    "scripts":  {
-                    "build":  "tsc -p tsconfig.build.json \u0026\u0026 tsc -p tsconfig.cjs.json \u0026\u0026 node -e \"require(\u0027fs\u0027).cpSync(\u0027src/css/ui.css\u0027,\u0027dist/ui.css\u0027)\"",
-                    "dev":  "tsc -p tsconfig.build.json --watch",
-                    "test":  "vitest run --passWithNoTests",
-                    "clean":  "rimraf dist",
-                    "typecheck":  "tsc --noEmit",
-                    "prepublishOnly":  "npm run clean \u0026\u0026 npm run build"
-                },
-    "keywords":  [
-                     "solid",
-                     "solidjs",
-                     "fine-grained-reactivity",
-                     "components",
-                     "ui",
-                     "design-system",
-                     "risklab"
-                 ],
-    "author":  "RiskLab Contributors",
-    "license":  "Apache-2.0",
-    "repository":  {
-                       "type":  "git",
-                       "url":  "https://github.com/rpwalsh/risklab-ui",
-                       "directory":  "ui/solid"
-                   },
-    "homepage":  "https://rpwalsh.github.io/",
-    "bugs":  {
-                 "url":  "https://github.com/rpwalsh/risklab-ui/issues"
-             },
-    "peerDependencies":  {
-                             "solid-js":  "\u003e=1.8.0"
-                         },
-    "devDependencies":  {
-                            "solid-js":  "^1.9.0",
-                            "rimraf":  "^6.0.0",
-                            "typescript":  "^5.7.0",
-                            "vitest":  "^3.0.0"
-                        },
-    "engines":  {
-                    "node":  "\u003e=20.0.0"
-                }
+    "name": "@risklab/ui-solid",
+    "version": "1.0.0",
+    "type": "module",
+    "description": "@risklab/ui-solid — SolidJS component library. Fine-grained reactivity. Same design token system as @risklab/charts and sibling UI packages.",
+    "main": "dist/cjs/index.js",
+    "module": "dist/esm/index.js",
+    "types": "dist/types/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/types/index.d.ts",
+            "import": "./dist/esm/index.js",
+            "require": "./dist/cjs/index.js"
+        },
+        "./theme": {
+            "types": "./dist/types/theme/index.d.ts",
+            "import": "./dist/esm/theme/index.js",
+            "require": "./dist/cjs/theme/index.js"
+        },
+        "./layout": {
+            "types": "./dist/types/layout/index.d.ts",
+            "import": "./dist/esm/layout/index.js",
+            "require": "./dist/cjs/layout/index.js"
+        },
+        "./inputs": {
+            "types": "./dist/types/inputs/index.d.ts",
+            "import": "./dist/esm/inputs/index.js",
+            "require": "./dist/cjs/inputs/index.js"
+        },
+        "./data-display": {
+            "types": "./dist/types/data-display/index.d.ts",
+            "import": "./dist/esm/data-display/index.js",
+            "require": "./dist/cjs/data-display/index.js"
+        },
+        "./feedback": {
+            "types": "./dist/types/feedback/index.d.ts",
+            "import": "./dist/esm/feedback/index.js",
+            "require": "./dist/cjs/feedback/index.js"
+        },
+        "./navigation": {
+            "types": "./dist/types/navigation/index.d.ts",
+            "import": "./dist/esm/navigation/index.js",
+            "require": "./dist/cjs/navigation/index.js"
+        },
+        "./surfaces": {
+            "types": "./dist/types/surfaces/index.d.ts",
+            "import": "./dist/esm/surfaces/index.js",
+            "require": "./dist/cjs/surfaces/index.js"
+        },
+        "./utils": {
+            "types": "./dist/types/utils/index.d.ts",
+            "import": "./dist/esm/utils/index.js",
+            "require": "./dist/cjs/utils/index.js"
+        },
+        "./css": "./dist/ui.css"
+    },
+    "sideEffects": [
+        "*.css"
+    ],
+    "files": [
+        "dist",
+        "README.md",
+        "LICENSE",
+        "NOTICE"
+    ],
+    "funding": {
+        "type": "github",
+        "url": "https://github.com/sponsors/rpwalsh"
+    },
+    "scripts": {
+        "build": "tsc -p tsconfig.build.json && tsc -p tsconfig.cjs.json && node ../../tools/compile-solid-output.mjs . && node ../../tools/build-ui-css.mjs solid && node ../../tools/finalize-output.mjs .",
+        "dev": "tsc -p tsconfig.build.json --watch",
+        "test": "npm run build && node --conditions=browser ../../tools/test-built-package.mjs .",
+        "clean": "rimraf dist",
+        "typecheck": "tsc --noEmit",
+        "prepublishOnly": "npm run clean && npm run build"
+    },
+    "keywords": [
+        "solid",
+        "solidjs",
+        "fine-grained-reactivity",
+        "components",
+        "ui",
+        "design-system",
+        "risklab"
+    ],
+    "author": "Ryan Walsh",
+    "license": "Apache-2.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/rpwalsh/risklab-ui",
+        "directory": "ui/solid"
+    },
+    "homepage": "https://rpwalsh.github.io/",
+    "bugs": {
+        "url": "https://github.com/rpwalsh/risklab-ui/issues"
+    },
+    "peerDependencies": {
+        "solid-js": ">=1.8.0"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.29.7",
+        "@babel/core": "^7.29.7",
+        "@babel/plugin-transform-modules-commonjs": "^7.29.7",
+        "babel-preset-solid": "^1.9.12",
+        "rimraf": "^6.0.0",
+        "solid-js": "^1.9.0",
+        "typescript": "^5.7.0",
+        "vitest": "^3.0.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "engines": {
+        "node": ">=20.0.0"
+    }
 }

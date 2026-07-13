@@ -17,22 +17,9 @@
     footer?: Snippet;
   } = $props();
 
-  function handleKeydown(e: KeyboardEvent) {
-    if (interactive && (e.key === 'Enter' || e.key === ' ')) {
-      e.preventDefault();
-      onclick?.(new MouseEvent('click'));
-    }
-  }
 </script>
 
-<div
-  class="ui-card ui-card--{variant}"
-  class:ui-card--interactive={interactive}
-  role={interactive ? 'button' : undefined}
-  tabindex={interactive ? 0 : undefined}
-  {onclick}
-  onkeydown={interactive ? handleKeydown : undefined}
->
+{#snippet content()}
   {#if header}
     <div class="ui-card-header">
       {@render header()}
@@ -48,7 +35,17 @@
       {@render footer()}
     </div>
   {/if}
-</div>
+{/snippet}
+
+{#if interactive}
+  <button type="button" class="ui-card ui-card--{variant} ui-card--interactive" {onclick}>
+    {@render content()}
+  </button>
+{:else}
+  <div class="ui-card ui-card--{variant}">
+    {@render content()}
+  </div>
+{/if}
 
 <style>
   .ui-card {
@@ -60,6 +57,8 @@
     color: var(--ui-card-color, inherit);
     transition: box-shadow 200ms, transform 100ms;
     box-sizing: border-box;
+    width: 100%;
+    text-align: inherit;
   }
   .ui-card--elevated {
     background-color: var(--ui-card-bg, #fff);

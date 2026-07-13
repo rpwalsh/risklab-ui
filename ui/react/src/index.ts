@@ -1,7 +1,7 @@
 /**
  * @risklab/ui-react
- * Full-featured React component library with StyleX/xstyle compatibility.
- * A comprehensive replacement for MUI with no external runtime dependencies.
+ * Full-featured React component library with atomic-style compatibility.
+ * A comprehensive component library with no external UI runtime dependency.
  */
 
 // --- Theme ----------------------------------------------------
@@ -22,7 +22,7 @@ export type {
 
 // --- Styling utilities ----------------------------------------
 export { cx, sx, xstyle } from './styling';
-export type { XStyleProp, SizeVariant, ColorVariant, BaseProps } from './styling';
+export type { AtomicStyleProp, SizeVariant, ColorVariant, BaseProps } from './styling';
 
 // --- Layout -------------------------------------------------------------------
 export {
@@ -39,6 +39,11 @@ export {
   ScrollArea,
   Masonry,
   SplitPane,
+  ViewportLayout,
+  ViewportLayoutArea,
+  viewportLayoutPresets,
+  getViewportLayoutPreset,
+  listViewportLayoutPresets,
 } from './layout';
 export type {
   BoxProps,
@@ -57,7 +62,60 @@ export type {
   MasonryProps,
   SplitPaneProps,
   ResizableDirection,
+  ViewportLayoutProps,
+  ViewportLayoutAreaProps,
+  ViewportLayoutPreset,
+  ViewportLayoutPresetId,
+  ViewportLayoutAreaDefinition,
 } from './layout';
+
+// --- Workbench ------------------------------------------------
+export {
+  EntityInspector,
+  FilterBar,
+  PanelLayout,
+  QueryBar,
+  TimeRangeControl,
+  WorkbenchPanel,
+  WorkbenchProvider,
+  WorkbenchShell,
+  createInitialWorkbenchState,
+  createSavedWorkbenchView,
+  createWorkbenchStore,
+  createWorkbenchThemeVars,
+  darkWorkbenchTheme,
+  highContrastWorkbenchTheme,
+  lightWorkbenchTheme,
+  parseSavedWorkbenchView,
+  resolveWorkbenchTheme,
+  serializeSavedWorkbenchView,
+  useWorkbench,
+  useWorkbenchOptional,
+  useWorkbenchPanelState,
+} from './workbench';
+export type {
+  EntityInspectorProps,
+  FilterBarProps,
+  FilterDefinition,
+  FilterOption,
+  PanelLayoutProps,
+  QueryBarProps,
+  SavedWorkbenchView,
+  TimeRangeControlProps,
+  TimeRangeOption,
+  TimeWindow,
+  WorkbenchAction,
+  WorkbenchCompareState,
+  WorkbenchFilterValue,
+  WorkbenchPanelProps,
+  WorkbenchPanelState,
+  WorkbenchProviderProps,
+  WorkbenchSelection,
+  WorkbenchShellProps,
+  WorkbenchState,
+  WorkbenchThemeTokens,
+  WorkbenchTone,
+} from './workbench';
 
 // --- Inputs ---------------------------------------------------
 export {
@@ -149,6 +207,8 @@ export {
   CardContent,
   CardActions,
   DataGrid,
+  PivotGrid,
+  TreeGrid,
   Timeline,
   TimelineContent,
   TimelineDot,
@@ -200,6 +260,12 @@ export type {
   DataGridColumn,
   SortModelEntry,
   FilterModelEntry,
+  PivotGridProps,
+  PivotGridConfig,
+  PivotValueDefinition,
+  TreeGridProps,
+  TreeGridColumn,
+  TreeGridRow,
   TimelineProps,
   TimelineItemData,
   TreeViewProps,

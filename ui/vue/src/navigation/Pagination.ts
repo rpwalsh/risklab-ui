@@ -15,7 +15,7 @@ export const UiPagination = defineComponent({
   },
   emits: ['update:modelValue'],
   setup(props, { emit }) {
-    /* build range like MUI pagination */
+    /* build range like component library pagination */
     const range = computed(() => {
       const { count, siblingCount, boundaryCount, modelValue: page } = props;
       if (count <= 0) return [];

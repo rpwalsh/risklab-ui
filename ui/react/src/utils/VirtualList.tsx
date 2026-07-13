@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef, useState, useLayoutEffect, useCallback } from 'react';
+import React, { forwardRef, useRef, useState, useLayoutEffect, useCallback, useMemo } from 'react';
 
 export interface VirtualListProps<T = unknown> {
   items: T[];
@@ -9,6 +9,7 @@ export interface VirtualListProps<T = unknown> {
   getItemKey?: (item: T, index: number) => React.Key;
   onScrollEnd?: () => void;
   scrollToIndex?: number;
+  scrollAlignment?: 'start' | 'center' | 'end' | 'auto';
   className?: string;
   style?: React.CSSProperties;
   xstyle?: Record<string, string | number> | Array<Record<string, string | number> | false | null | undefined>;
@@ -26,6 +27,7 @@ export const VirtualList = forwardRef<HTMLDivElement, VirtualListProps<any>>(fun
     getItemKey,
     onScrollEnd,
     scrollToIndex,
+    scrollAlignment = 'auto',
     className,
     style,
     xstyle,
@@ -36,19 +38,22 @@ export const VirtualList = forwardRef<HTMLDivElement, VirtualListProps<any>>(fun
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollTop, setScrollTop] = useState(0);
   const [containerHeight, setContainerHeight] = useState(0);
+  const endNotifiedRef = useRef(false);
 
   // Compute heights and offsets
   const isFixed = typeof rowHeight === 'number';
-  const heights = isFixed ? null : items.map((item, i) => (rowHeight as (item: T, index: number) => number)(item, i));
-  let runningOffset = 0;
-  const offsets = heights
-    ? heights.map((heightValue) => {
-        const offset = runningOffset;
-        runningOffset += heightValue;
-        return offset;
-      })
-    : null;
-  const totalHeight = isFixed ? items.length * (rowHeight as number) : (heights!.reduce((s, h) => s + h, 0));
+  const measurements = useMemo(() => {
+    if (isFixed) return { heights: null, offsets: null, totalHeight: items.length * (rowHeight as number) };
+    const heights = items.map((item, index) => Math.max(0, (rowHeight as (item: T, index: number) => number)(item, index)));
+    let runningOffset = 0;
+    const offsets = heights.map((heightValue) => {
+      const offset = runningOffset;
+      runningOffset += heightValue;
+      return offset;
+    });
+    return { heights, offsets, totalHeight: runningOffset };
+  }, [isFixed, items, rowHeight]);
+  const { heights, offsets, totalHeight } = measurements;
 
   const getOffset = useCallback((idx: number) => isFixed ? idx * (rowHeight as number) : offsets![idx] ?? 0, [isFixed, rowHeight, offsets]);
   const getHeight = useCallback((idx: number) => isFixed ? rowHeight as number : heights![idx], [isFixed, rowHeight, heights]);
@@ -59,7 +64,7 @@ export const VirtualList = forwardRef<HTMLDivElement, VirtualListProps<any>>(fun
     let lo = 0, hi = items.length - 1;
     while (lo < hi) {
       const mid = (lo + hi) >> 1;
-      if (offsets![mid] < scrollTop) lo = mid + 1; else hi = mid;
+      if (offsets![mid]! + heights![mid]! <= scrollTop) lo = mid + 1; else hi = mid;
     }
     return Math.max(0, lo - overscan);
   }, [isFixed, rowHeight, scrollTop, overscan, offsets, items.length]);
@@ -74,6 +79,10 @@ export const VirtualList = forwardRef<HTMLDivElement, VirtualListProps<any>>(fun
   useLayoutEffect(() => {
     const el = containerRef.current;
     if (!el) return;
+    if (typeof ResizeObserver === 'undefined') {
+      setContainerHeight(el.clientHeight);
+      return;
+    }
     const ro = new ResizeObserver(() => setContainerHeight(el.clientHeight));
     ro.observe(el);
     setContainerHeight(el.clientHeight);
@@ -82,8 +91,19 @@ export const VirtualList = forwardRef<HTMLDivElement, VirtualListProps<any>>(fun
 
   useLayoutEffect(() => {
     if (scrollToIndex == null || !containerRef.current) return;
-    containerRef.current.scrollTop = getOffset(scrollToIndex);
-  }, [scrollToIndex, getOffset]);
+    const index = Math.max(0, Math.min(items.length - 1, scrollToIndex));
+    const start = getOffset(index);
+    const end = start + getHeight(index);
+    const viewportStart = containerRef.current.scrollTop;
+    const viewportEnd = viewportStart + containerRef.current.clientHeight;
+    if (scrollAlignment === 'auto' && start >= viewportStart && end <= viewportEnd) return;
+    const target = scrollAlignment === 'center'
+      ? start - (containerRef.current.clientHeight - getHeight(index)) / 2
+      : scrollAlignment === 'end'
+        ? end - containerRef.current.clientHeight
+        : start;
+    containerRef.current.scrollTop = Math.max(0, target);
+  }, [scrollToIndex, scrollAlignment, items.length, getOffset, getHeight]);
 
   const start = findStart();
   const end = findEnd(start);
@@ -91,7 +111,9 @@ export const VirtualList = forwardRef<HTMLDivElement, VirtualListProps<any>>(fun
   const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
     const el = e.currentTarget;
     setScrollTop(el.scrollTop);
-    if (el.scrollTop + el.clientHeight >= el.scrollHeight - 20) onScrollEnd?.();
+    const atEnd = el.scrollTop + el.clientHeight >= el.scrollHeight - 20;
+    if (atEnd && !endNotifiedRef.current) onScrollEnd?.();
+    endNotifiedRef.current = atEnd;
   }, [onScrollEnd]);
 
   return (
@@ -124,9 +146,9 @@ export const VirtualList = forwardRef<HTMLDivElement, VirtualListProps<any>>(fun
             overflow: 'hidden',
           };
           return (
-            <React.Fragment key={getItemKey ? getItemKey(item, absIdx) : absIdx}>
+            <div role="listitem" key={getItemKey ? getItemKey(item, absIdx) : absIdx}>
               {renderItem(item, absIdx, itemStyle)}
-            </React.Fragment>
+            </div>
           );
         })}
       </div>

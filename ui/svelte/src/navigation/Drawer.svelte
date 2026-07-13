@@ -37,9 +37,9 @@
   onkeydown={handleKeydown}
 >
   {#if overlay}
-    <div class="ui-drawer-backdrop" onclick={handleBackdrop}></div>
+    <button type="button" class="ui-drawer-backdrop" aria-label="Close drawer" onclick={handleBackdrop}></button>
   {/if}
-  <aside
+  <div
     class="ui-drawer ui-drawer--{anchor}"
     data-open={open || undefined}
     style={sizeVar}
@@ -48,7 +48,7 @@
     inert={!open || undefined}
   >
     {@render children?.()}
-  </aside>
+  </div>
 </div>
 
 <style>
@@ -65,6 +65,8 @@
     background: rgba(0, 0, 0, 0.5);
     opacity: 0;
     transition: opacity var(--ui-transition-base, 250ms);
+    border: 0;
+    padding: 0;
   }
   .ui-drawer-container[data-open] .ui-drawer-backdrop { opacity: 1; }
 

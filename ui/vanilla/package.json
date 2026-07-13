@@ -1,6 +1,7 @@
 {
     "name":  "@risklab/ui-vanilla",
     "version":  "1.0.0",
+    "type":  "module",
     "description":  "@risklab/ui-vanilla — Framework-agnostic Web Component UI library. Custom Elements v1 + Shadow DOM. Zero dependencies. Same design token system as @risklab/charts and @risklab/ui-react.",
     "main":  "dist/cjs/index.js",
     "module":  "dist/esm/index.js",
@@ -70,17 +71,16 @@
                   "dist",
                   "README.md",
                   "LICENSE",
-                  "NOTICE",
-                  "LICENSE.txt"
+                  "NOTICE"
               ],
     "funding":  {
                     "type":  "github",
                     "url":  "https://github.com/sponsors/rpwalsh"
                 },
     "scripts":  {
-                    "build":  "tsc -p tsconfig.build.json \u0026\u0026 tsc -p tsconfig.cjs.json \u0026\u0026 node -e \"require(\u0027fs\u0027).cpSync(\u0027src/css/ui.css\u0027,\u0027dist/ui.css\u0027)\"",
+                    "build":  "tsc -p tsconfig.build.json \u0026\u0026 tsc -p tsconfig.cjs.json \u0026\u0026 node ../../tools/build-ui-vanilla-css.mjs \u0026\u0026 node ../../tools/finalize-output.mjs .",
                     "dev":  "tsc -p tsconfig.build.json --watch",
-                    "test":  "vitest run --passWithNoTests",
+                    "test":  "vitest run",
                     "test:watch":  "vitest",
                     "clean":  "rimraf dist",
                     "typecheck":  "tsc --noEmit",
@@ -107,7 +107,7 @@
                      "shoelace-alternative",
                      "risklab"
                  ],
-    "author":  "RiskLab Contributors",
+    "author":  "Ryan Walsh",
     "license":  "Apache-2.0",
     "repository":  {
                        "type":  "git",
@@ -123,6 +123,8 @@
                             "typescript":  "^5.7.0",
                             "vitest":  "^3.0.0"
                         },
+    "publishConfig":  { "access": "public" },
+    "dependencies":  { "@risklab/ui-data": "^1.0.0" },
     "engines":  {
                     "node":  "\u003e=20.0.0"
                 }

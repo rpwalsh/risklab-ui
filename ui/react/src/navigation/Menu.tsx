@@ -1,4 +1,4 @@
-import React, { forwardRef, createContext, useContext, useState, useEffect } from 'react';
+import React, { forwardRef, createContext, useContext, useState, useEffect, useImperativeHandle, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 export interface MenuItemData {
@@ -61,6 +61,8 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
   ref
 ) {
   const [pos, setPos] = useState<{ top: number; left: number; transform: string }>({ top: 0, left: 0, transform: '' });
+  const menuRef = useRef<HTMLDivElement>(null);
+  useImperativeHandle(ref, () => menuRef.current as HTMLDivElement);
 
   useEffect(() => {
     if (open && anchorEl) {
@@ -70,10 +72,22 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
 
   useEffect(() => {
     if (!open) return;
-    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    const frame = requestAnimationFrame(() => {
+      menuRef.current?.querySelector<HTMLElement>('[role="menuitem"]:not([aria-disabled="true"])')?.focus();
+    });
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        onClose();
+        (anchorEl as HTMLElement | null)?.focus?.();
+      }
+    };
     document.addEventListener('keydown', handler);
-    return () => document.removeEventListener('keydown', handler);
-  }, [open, onClose]);
+    return () => {
+      cancelAnimationFrame(frame);
+      document.removeEventListener('keydown', handler);
+    };
+  }, [open, onClose, anchorEl]);
 
   if (!open) return null;
 
@@ -81,7 +95,7 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
     <MenuContext.Provider value={{ onClose }}>
       <div aria-hidden="true" className="ui-menu__overlay" onClick={onClose} />
       <div
-        ref={ref}
+        ref={menuRef}
         role="menu"
         aria-orientation="vertical"
         data-testid={testId}
@@ -92,6 +106,19 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
           maxHeight: typeof maxHeight === 'number' ? `${maxHeight}px` : maxHeight,
           ...style,
           ...(xstyle && !Array.isArray(xstyle) ? xstyle as React.CSSProperties : {}),
+        }}
+        onKeyDown={(event) => {
+          const enabled = [...(event.currentTarget.querySelectorAll<HTMLElement>('[role="menuitem"]:not([aria-disabled="true"])'))];
+          if (enabled.length === 0) return;
+          const current = enabled.indexOf(document.activeElement as HTMLElement);
+          let next = current;
+          if (event.key === 'ArrowDown') next = (current + 1 + enabled.length) % enabled.length;
+          else if (event.key === 'ArrowUp') next = (current - 1 + enabled.length) % enabled.length;
+          else if (event.key === 'Home') next = 0;
+          else if (event.key === 'End') next = enabled.length - 1;
+          else return;
+          event.preventDefault();
+          enabled[next]?.focus();
         }}
       >
         {items ? items.map((item) => <MenuItemComponent key={item.key} item={item} />) : children}
@@ -112,7 +139,7 @@ function MenuItemComponent({ item }: { item: MenuItemData }) {
   return (
     <div
       role="menuitem"
-      tabIndex={item.disabled ? -1 : 0}
+      tabIndex={-1}
       aria-disabled={item.disabled}
       className={['ui-menu-item', item.disabled ? 'ui-menu-item--disabled' : ''].filter(Boolean).join(' ')}
       onClick={item.disabled ? undefined : () => {
@@ -146,7 +173,7 @@ export interface MenuItemProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(function MenuItem(
-  { icon, shortcut, endContent, disabled, selected, xstyle, testId, className, style, children, onClick, ...rest },
+  { icon, shortcut, endContent, disabled, selected, xstyle, testId, className, style, children, onClick, onKeyDown, ...rest },
   ref
 ) {
   const ctx = useContext(MenuContext);
@@ -155,7 +182,7 @@ export const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(function MenuI
     <div
       ref={ref}
       role="menuitem"
-      tabIndex={disabled ? -1 : 0}
+      tabIndex={-1}
       aria-disabled={disabled}
       aria-selected={selected}
       data-testid={testId}
@@ -163,8 +190,11 @@ export const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(function MenuI
       {...(style || (xstyle && !Array.isArray(xstyle)) ? { style: { ...style, ...(xstyle && !Array.isArray(xstyle) ? xstyle as React.CSSProperties : {}) } } : undefined)}
       onClick={disabled ? undefined : (e) => { onClick?.(e); ctx?.onClose(); }}
       onKeyDown={(e) => {
+        onKeyDown?.(e);
+        if (e.defaultPrevented) return;
         if (!disabled && (e.key === 'Enter' || e.key === ' ')) {
           e.preventDefault();
+          onClick?.(e as unknown as React.MouseEvent<HTMLDivElement>);
           ctx?.onClose();
         }
       }}

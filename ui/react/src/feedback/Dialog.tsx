@@ -151,24 +151,19 @@ export const DialogActions = forwardRef<HTMLDivElement, DialogActionsProps>(
   },
 );
 
-const keyframesId = 'ui-dialog-keyframes';
+let bodyLockCount = 0;
+let bodyOverflowBeforeLock = '';
 
-function ensureKeyframes(): void {
-  if (typeof document === 'undefined') return;
-  if (document.getElementById(keyframesId)) return;
-  const styleEl = document.createElement('style');
-  styleEl.id = keyframesId;
-  styleEl.textContent = `
-@keyframes ui-dialog-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-@keyframes ui-dialog-scale-in {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-`;
-  document.head.appendChild(styleEl);
+function lockBodyScroll(): () => void {
+  if (bodyLockCount === 0) {
+    bodyOverflowBeforeLock = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+  }
+  bodyLockCount += 1;
+  return () => {
+    bodyLockCount = Math.max(0, bodyLockCount - 1);
+    if (bodyLockCount === 0) document.body.style.overflow = bodyOverflowBeforeLock;
+  };
 }
 
 export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
@@ -206,33 +201,22 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
     [ref],
   );
 
-  useEffect(() => {
-    ensureKeyframes();
-  }, []);
-
   // Focus management: focus first focusable on open, return focus on close
   useEffect(() => {
-    if (open) {
-      previousFocusRef.current = document.activeElement as HTMLElement | null;
-      // Defer to allow portal to render
-      const timer = setTimeout(() => {
-        const dialog = dialogRef.current;
-        if (dialog) {
-          const firstFocusable = dialog.querySelector<HTMLElement>(FOCUSABLE_SELECTOR);
-          if (firstFocusable) {
-            firstFocusable.focus();
-          } else {
-            dialog.focus();
-          }
-        }
-      }, 0);
-      return () => clearTimeout(timer);
-    } else {
-      if (previousFocusRef.current) {
-        previousFocusRef.current.focus();
-        previousFocusRef.current = null;
+    if (!open) return;
+    previousFocusRef.current = document.activeElement as HTMLElement | null;
+    const timer = setTimeout(() => {
+      const dialog = dialogRef.current;
+      if (dialog) {
+        const firstFocusable = dialog.querySelector<HTMLElement>(FOCUSABLE_SELECTOR);
+        (firstFocusable ?? dialog).focus();
       }
-    }
+    }, 0);
+    return () => {
+      clearTimeout(timer);
+      if (previousFocusRef.current?.isConnected) previousFocusRef.current.focus();
+      previousFocusRef.current = null;
+    };
   }, [open]);
 
   // Tab-key focus trap
@@ -246,7 +230,10 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
       if (focusable.length === 0) { e.preventDefault(); return; }
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
+      if (!dialog.contains(document.activeElement)) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus();
+      } else if (e.shiftKey && document.activeElement === first) {
         e.preventDefault();
         last.focus();
       } else if (!e.shiftKey && document.activeElement === last) {
@@ -260,13 +247,8 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
 
   // Lock body scroll when open
   useEffect(() => {
-    if (open) {
-      const prev = document.body.style.overflow;
-      document.body.style.overflow = 'hidden';
-      return () => {
-        document.body.style.overflow = prev;
-      };
-    }
+    if (!open) return;
+    return lockBodyScroll();
   }, [open]);
 
   const handleKeyDown = useCallback(

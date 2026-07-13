@@ -1,4 +1,4 @@
-// @risklab/ui � TextField component
+// @risklab/ui — TextField component
 
 import {
   forwardRef,
@@ -32,7 +32,7 @@ export interface TextFieldProps extends BaseProps, NativeInputProps, NativeTexta
   label?: string;
   /** Helper text below the input. */
   helperText?: string;
-  /** Error state � `true` uses only the error styling, a string also displays the message. */
+  /** Error state — `true` uses only the error styling, a string also displays the message. */
   error?: boolean | string;
   /** Element rendered before the input (inside wrapper). */
   startAdornment?: ReactNode;
@@ -52,7 +52,7 @@ export interface TextFieldProps extends BaseProps, NativeInputProps, NativeTexta
   fullWidth?: boolean;
   /** HTML required flag. */
   required?: boolean;
-  /** Standard HTML input type (text, password, number�). */
+  /** Standard HTML input type (text, password, number—). */
   type?: string;
 }
 

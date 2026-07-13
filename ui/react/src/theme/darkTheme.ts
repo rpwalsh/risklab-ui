@@ -1,4 +1,4 @@
-// @risklab/ui — Dark Theme
+// @risklab/ui â€” Dark Theme
 // Indigo primary on dark slate surfaces. Tailwind-inspired dark palette.
 
 import type { UITheme } from './types';
@@ -8,7 +8,7 @@ export const darkTheme: UITheme = {
   name: 'UI Dark',
   mode: 'dark',
   tokens: {
-    // Primary — Indigo (lightened for dark backgrounds)
+    // Primary â€” Indigo (lightened for dark backgrounds)
     primary: {
       50:  '#1e1b4b',
       100: '#312e81',
@@ -23,7 +23,7 @@ export const darkTheme: UITheme = {
       950: '#eef2ff',
     },
 
-    // Secondary — Violet
+    // Secondary â€” Violet
     secondary: {
       50:  '#2e1065',
       100: '#4c1d95',
@@ -38,7 +38,7 @@ export const darkTheme: UITheme = {
       950: '#f5f3ff',
     },
 
-    // Neutral — Slate (inverted)
+    // Neutral â€” Slate (inverted)
     neutral: {
       50:  '#020617',
       100: '#0f172a',
@@ -53,7 +53,7 @@ export const darkTheme: UITheme = {
       950: '#f8fafc',
     },
 
-    // Error — Red
+    // Error â€” Red
     error: {
       50:  '#450a0a',
       100: '#7f1d1d',
@@ -68,7 +68,7 @@ export const darkTheme: UITheme = {
       950: '#fef2f2',
     },
 
-    // Warning — Amber
+    // Warning â€” Amber
     warning: {
       50:  '#451a03',
       100: '#78350f',
@@ -83,7 +83,7 @@ export const darkTheme: UITheme = {
       950: '#fffbeb',
     },
 
-    // Success — Emerald
+    // Success â€” Emerald
     success: {
       50:  '#022c22',
       100: '#064e3b',
@@ -98,7 +98,7 @@ export const darkTheme: UITheme = {
       950: '#ecfdf5',
     },
 
-    // Info — Sky
+    // Info â€” Sky
     info: {
       50:  '#082f49',
       100: '#0c4a6e',

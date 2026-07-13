@@ -1,6 +1,8 @@
-// @risklab/ui — Data Display barrel export
+// @risklab/ui â€” Data Display barrel export
 
 // Typography
+export { Icon } from './Icon';
+export type { IconProps } from './Icon';
 export { Typography } from './Typography';
 export type { TypographyProps, TypographyVariant, TypographyWeight, TypographyAlign } from './Typography';
 
@@ -64,6 +66,10 @@ export type {
   SortModelEntry,
   FilterModelEntry,
 } from './DataGrid';
+export { PivotGrid } from './PivotGrid';
+export type { PivotGridProps, PivotGridConfig, PivotValueDefinition } from './PivotGrid';
+export { TreeGrid } from './TreeGrid';
+export type { TreeGridProps, TreeGridColumn, TreeGridRow } from './TreeGrid';
 
 // Timeline
 export { Timeline, TimelineContent, TimelineDot, TimelineConnector } from './Timeline';

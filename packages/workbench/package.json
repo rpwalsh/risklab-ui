@@ -1,6 +1,7 @@
 {
   "name": "@risklab/workbench",
   "version": "1.0.0",
+  "type": "module",
   "description": "@risklab/workbench - React/TypeScript analytical shell primitives and coordinated workbench state for serious operator-facing software.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -30,17 +31,16 @@
     "dist",
     "README.md",
     "LICENSE",
-    "NOTICE",
-    "LICENSE.txt"
+    "NOTICE"
   ],
   "funding": {
     "type": "github",
     "url": "https://github.com/sponsors/rpwalsh"
   },
   "scripts": {
-    "build": "rimraf dist && tsc -p tsconfig.build.json && tsc -p tsconfig.cjs.json && node -e \"require('fs').cpSync('src/css/workbench.css','dist/workbench.css')\"",
+    "build": "rimraf dist && tsc -p tsconfig.build.json && tsc -p tsconfig.cjs.json && node -e \"require('fs').cpSync('src/css/workbench.css','dist/workbench.css')\" && node ../../tools/finalize-output.mjs .",
     "dev": "tsc -p tsconfig.build.json --watch",
-    "test": "vitest run --passWithNoTests",
+    "test": "npm run build && node ../../tools/test-built-package.mjs .",
     "test:watch": "vitest",
     "clean": "rimraf dist",
     "typecheck": "tsc --noEmit",
@@ -62,7 +62,7 @@
     "shell",
     "risklab"
   ],
-  "author": "RiskLab Contributors",
+  "author": "Ryan Walsh",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

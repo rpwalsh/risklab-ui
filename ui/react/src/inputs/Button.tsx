@@ -1,4 +1,4 @@
-// @risklab/ui � Button component
+// @risklab/ui — Button component
 
 import {
   forwardRef,
@@ -44,7 +44,7 @@ export interface ButtonProps extends BaseProps, NativeButtonProps, NativeAnchorP
   disabled?: boolean;
   /** Stretches the button to 100 % width. */
   fullWidth?: boolean;
-  /** HTML button type � ignored when rendering an anchor. */
+  /** HTML button type — ignored when rendering an anchor. */
   type?: 'button' | 'submit' | 'reset';
   /** If provided, renders as an anchor (`<a>`) element. */
   href?: string;

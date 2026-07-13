@@ -1,140 +1,149 @@
 {
-    "name":  "@risklab/ui-react",
-    "version":  "1.0.0",
-    "description":  "@risklab/ui-react — React component library for building analytical application shells. Same design token system as @risklab/charts and @risklab/ui-vanilla. Zero external runtime dependencies.",
-    "main":  "dist/cjs/index.js",
-    "module":  "dist/esm/index.js",
-    "types":  "dist/types/index.d.ts",
-    "exports":  {
-                    ".":  {
-                              "types":  "./dist/types/index.d.ts",
-                              "import":  "./dist/esm/index.js",
-                              "require":  "./dist/cjs/index.js"
-                          },
-                    "./theme":  {
-                                    "types":  "./dist/types/theme/index.d.ts",
-                                    "import":  "./dist/esm/theme/index.js",
-                                    "require":  "./dist/cjs/theme/index.js"
-                                },
-                    "./layout":  {
-                                     "types":  "./dist/types/layout/index.d.ts",
-                                     "import":  "./dist/esm/layout/index.js",
-                                     "require":  "./dist/cjs/layout/index.js"
-                                 },
-                    "./inputs":  {
-                                     "types":  "./dist/types/inputs/index.d.ts",
-                                     "import":  "./dist/esm/inputs/index.js",
-                                     "require":  "./dist/cjs/inputs/index.js"
-                                 },
-                    "./data-display":  {
-                                           "types":  "./dist/types/data-display/index.d.ts",
-                                           "import":  "./dist/esm/data-display/index.js",
-                                           "require":  "./dist/cjs/data-display/index.js"
-                                       },
-                    "./feedback":  {
-                                       "types":  "./dist/types/feedback/index.d.ts",
-                                       "import":  "./dist/esm/feedback/index.js",
-                                       "require":  "./dist/cjs/feedback/index.js"
-                                   },
-                    "./navigation":  {
-                                         "types":  "./dist/types/navigation/index.d.ts",
-                                         "import":  "./dist/esm/navigation/index.js",
-                                         "require":  "./dist/cjs/navigation/index.js"
-                                     },
-                    "./surfaces":  {
-                                       "types":  "./dist/types/surfaces/index.d.ts",
-                                       "import":  "./dist/esm/surfaces/index.js",
-                                       "require":  "./dist/cjs/surfaces/index.js"
-                                   },
-                    "./utils":  {
-                                    "types":  "./dist/types/utils/index.d.ts",
-                                    "import":  "./dist/esm/utils/index.js",
-                                    "require":  "./dist/cjs/utils/index.js"
-                                },
-                    "./css":  "./dist/ui.css"
-                },
-    "sideEffects":  [
-                        "*.css"
-                    ],
-    "files":  [
-                  "dist",
-                  "README.md",
-                  "LICENSE",
-                  "NOTICE",
-                  "LICENSE.txt"
-              ],
-    "funding":  {
-                    "type":  "github",
-                    "url":  "https://github.com/sponsors/rpwalsh"
-                },
-    "scripts":  {
-                    "build":  "tsc -p tsconfig.build.json \u0026\u0026 tsc -p tsconfig.cjs.json \u0026\u0026 node -e \"require(\u0027fs\u0027).cpSync(\u0027src/css/ui.css\u0027,\u0027dist/ui.css\u0027)\"",
-                    "dev":  "tsc -p tsconfig.build.json --watch",
-                    "test":  "vitest run --passWithNoTests",
-                    "test:watch":  "vitest",
-                    "clean":  "rimraf dist",
-                    "typecheck":  "tsc --noEmit",
-                    "prepublishOnly":  "npm run clean \u0026\u0026 npm run build"
-                },
-    "keywords":  [
-                     "react",
-                     "components",
-                     "ui",
-                     "design-system",
-                     "grid",
-                     "flexbox",
-                     "table",
-                     "toast",
-                     "modal",
-                     "dialog",
-                     "tabs",
-                     "button",
-                     "input",
-                     "form",
-                     "alert",
-                     "banner",
-                     "chip",
-                     "badge",
-                     "avatar",
-                     "tooltip",
-                     "menu",
-                     "drawer",
-                     "accordion",
-                     "pagination",
-                     "breadcrumbs",
-                     "progress",
-                     "skeleton",
-                     "stylex",
-                     "xstyle",
-                     "css-in-js",
-                     "material-ui-alternative",
-                     "mui-alternative",
-                     "open-source",
-                     "risklab"
-                 ],
-    "author":  "RiskLab Contributors",
-    "license":  "Apache-2.0",
-    "repository":  {
-                       "type":  "git",
-                       "url":  "https://github.com/rpwalsh/risklab-ui",
-                       "directory":  "ui/react"
-                   },
-    "homepage":  "https://rpwalsh.github.io/",
-    "bugs":  {
-                 "url":  "https://github.com/rpwalsh/risklab-ui/issues"
-             },
-    "peerDependencies":  {
-                             "react":  "\u003e=18.0.0",
-                             "react-dom":  "\u003e=18.0.0"
-                         },
-    "devDependencies":  {
-                            "@types/react":  "^19.0.0",
-                            "@types/react-dom":  "^19.0.0",
-                            "rimraf":  "^6.0.0",
-                            "typescript":  "^5.7.0",
-                            "vitest":  "^3.0.0"
-                        },
-    "engines":  {
-                    "node":  "\u003e=20.0.0"
-                }
+    "name": "@risklab/ui-react",
+    "version": "1.0.0",
+    "type": "module",
+    "description": "@risklab/ui-react — React component library for building analytical application shells. Same design token system as @risklab/charts and @risklab/ui-vanilla. Zero external runtime dependencies.",
+    "main": "dist/cjs/index.js",
+    "module": "dist/esm/index.js",
+    "types": "dist/types/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/types/index.d.ts",
+            "import": "./dist/esm/index.js",
+            "require": "./dist/cjs/index.js"
+        },
+        "./theme": {
+            "types": "./dist/types/theme/index.d.ts",
+            "import": "./dist/esm/theme/index.js",
+            "require": "./dist/cjs/theme/index.js"
+        },
+        "./layout": {
+            "types": "./dist/types/layout/index.d.ts",
+            "import": "./dist/esm/layout/index.js",
+            "require": "./dist/cjs/layout/index.js"
+        },
+        "./inputs": {
+            "types": "./dist/types/inputs/index.d.ts",
+            "import": "./dist/esm/inputs/index.js",
+            "require": "./dist/cjs/inputs/index.js"
+        },
+        "./data-display": {
+            "types": "./dist/types/data-display/index.d.ts",
+            "import": "./dist/esm/data-display/index.js",
+            "require": "./dist/cjs/data-display/index.js"
+        },
+        "./feedback": {
+            "types": "./dist/types/feedback/index.d.ts",
+            "import": "./dist/esm/feedback/index.js",
+            "require": "./dist/cjs/feedback/index.js"
+        },
+        "./navigation": {
+            "types": "./dist/types/navigation/index.d.ts",
+            "import": "./dist/esm/navigation/index.js",
+            "require": "./dist/cjs/navigation/index.js"
+        },
+        "./surfaces": {
+            "types": "./dist/types/surfaces/index.d.ts",
+            "import": "./dist/esm/surfaces/index.js",
+            "require": "./dist/cjs/surfaces/index.js"
+        },
+        "./utils": {
+            "types": "./dist/types/utils/index.d.ts",
+            "import": "./dist/esm/utils/index.js",
+            "require": "./dist/cjs/utils/index.js"
+        },
+        "./workbench": {
+            "types": "./dist/types/workbench/index.d.ts",
+            "import": "./dist/esm/workbench/index.js",
+            "require": "./dist/cjs/workbench/index.js"
+        },
+        "./css": "./dist/ui.css"
+    },
+    "sideEffects": [
+        "*.css"
+    ],
+    "files": [
+        "dist",
+        "README.md",
+        "LICENSE",
+        "NOTICE"
+    ],
+    "funding": {
+        "type": "github",
+        "url": "https://github.com/sponsors/rpwalsh"
+    },
+    "scripts": {
+        "build": "tsc -p tsconfig.build.json && tsc -p tsconfig.cjs.json && node ../../tools/build-ui-react-css.mjs && node ../../tools/finalize-output.mjs .",
+        "dev": "tsc -p tsconfig.build.json --watch",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "clean": "rimraf dist",
+        "typecheck": "tsc --noEmit",
+        "prepublishOnly": "npm run clean && npm run build"
+    },
+    "keywords": [
+        "react",
+        "components",
+        "ui",
+        "design-system",
+        "grid",
+        "flexbox",
+        "table",
+        "toast",
+        "modal",
+        "dialog",
+        "tabs",
+        "button",
+        "input",
+        "form",
+        "alert",
+        "banner",
+        "chip",
+        "badge",
+        "avatar",
+        "tooltip",
+        "menu",
+        "drawer",
+        "accordion",
+        "pagination",
+        "breadcrumbs",
+        "progress",
+        "skeleton",
+        "styler",
+        "theme-object",
+        "css-in-js",
+        "open-source",
+        "risklab"
+    ],
+    "author": "Ryan Walsh",
+    "license": "Apache-2.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/rpwalsh/risklab-ui",
+        "directory": "ui/react"
+    },
+    "homepage": "https://rpwalsh.github.io/",
+    "bugs": {
+        "url": "https://github.com/rpwalsh/risklab-ui/issues"
+    },
+    "peerDependencies": {
+        "react": ">=18.0.0",
+        "react-dom": ">=18.0.0"
+    },
+    "dependencies": {
+        "@risklab/ui-data": "^1.0.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "devDependencies": {
+        "@types/react": "^19.0.0",
+        "@types/react-dom": "^19.0.0",
+        "rimraf": "^6.0.0",
+        "typescript": "^5.7.0",
+        "vitest": "^3.0.0"
+    },
+    "engines": {
+        "node": ">=20.0.0"
+    }
 }

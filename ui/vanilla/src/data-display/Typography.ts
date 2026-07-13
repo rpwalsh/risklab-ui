@@ -1,0 +1,7 @@
+import { UIElement } from '../core/UIElement'; import { register } from '../core/register';
+export class UITypography extends UIElement {
+  static observedAttributes=['variant','align','color','weight','truncate','lines'];
+  protected styles():string{return `:host{display:block}.text{margin:0;color:var(--_color,var(--ui-color-text));font-size:var(--_size,1rem);line-height:var(--_line,1.5);font-weight:var(--_weight,400);text-align:var(--_align,start)}:host([color=muted]){--_color:var(--ui-color-text-secondary,#64748b)}:host([variant=h1]){--_size:2.25rem;--_line:1.15;--_weight:700}:host([variant=h2]){--_size:1.75rem;--_line:1.2;--_weight:700}:host([variant=h3]){--_size:1.35rem;--_line:1.25;--_weight:650}:host([variant=subtitle]){--_size:1.05rem;--_weight:600}:host([variant=caption]){--_size:.75rem;--_line:1.35}:host([variant=overline]){--_size:.7rem;--_weight:700;text-transform:uppercase;letter-spacing:.1em}:host([truncate]) .text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}:host([lines]) .text{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:var(--_lines);overflow:hidden}`;}
+  protected template():string{const variant=this.getAttr('variant','body');const tag=variant==='h1'||variant==='h2'||variant==='h3'?variant:'p';return `<${tag} class="text" style="--_align:${this.getAttr('align','start')};--_weight:${this.getAttr('weight','')};--_lines:${this.getNumAttr('lines',2)}"><slot></slot></${tag}>`;}
+}
+register('ui-typography',UITypography);

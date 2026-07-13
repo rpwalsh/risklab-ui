@@ -1,4 +1,4 @@
-// @risklab/ui — Checkbox component
+// @risklab/ui â€” Checkbox component
 
 import {
   forwardRef,
@@ -12,7 +12,7 @@ import {
 } from 'react';
 import type { SizeVariant, ColorVariant, BaseProps } from '../styling/types';
 import { cx } from '../styling/cx';
-import { sx } from '../styling/stylex-compat';
+import { sx } from '../styling/atomic-runtime';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -134,7 +134,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     const hasError = error === true || typeof error === 'string';
     const errorMessage = typeof error === 'string' ? error : undefined;
 
-    // Handle indeterminate — needs imperative DOM access
+    // Handle indeterminate â€” needs imperative DOM access
     const internalRef = useRef<HTMLInputElement | null>(null);
 
     useEffect(() => {

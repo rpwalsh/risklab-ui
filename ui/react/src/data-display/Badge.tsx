@@ -1,4 +1,4 @@
-// @risklab/ui � Badge component
+// @risklab/ui — Badge component
 
 import {
   forwardRef,
@@ -26,7 +26,7 @@ export interface BadgeProps
     Omit<HTMLAttributes<HTMLSpanElement>, 'style' | 'className' | 'content'> {
   /** Badge content (number, text, or element). */
   content?: ReactNode;
-  /** Maximum numeric value � shows `{max}+` when exceeded. */
+  /** Maximum numeric value — shows `{max}+` when exceeded. */
   max?: number;
   /** Show a small dot indicator instead of content. */
   dot?: boolean;
@@ -71,7 +71,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
     const isDot = dot || variant === 'dot';
     const isInvisible = invisible || (content == null && !isDot);
 
-    // Format the content � clamp to max
+    // Format the content — clamp to max
     let displayContent: ReactNode = null;
     if (!isDot && content != null) {
       if (typeof content === 'number' && max != null && content > max) {

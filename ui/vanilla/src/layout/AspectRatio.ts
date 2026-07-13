@@ -1,0 +1,2 @@
+import { UIElement } from '../core/UIElement'; import { register } from '../core/register';
+export class UIAspectRatio extends UIElement { static observedAttributes=['ratio']; protected styles():string{return `:host{display:block;width:100%}.frame{width:100%;aspect-ratio:var(--_ratio,16/9);overflow:hidden;position:relative}::slotted(*){width:100%;height:100%;object-fit:cover}`;} protected template():string{return `<div class="frame" style="--_ratio:${this.getAttr('ratio','16/9')}"><slot></slot></div>`;} } register('ui-aspect-ratio',UIAspectRatio);

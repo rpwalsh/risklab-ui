@@ -1,0 +1,9 @@
+import { UIElement } from '../core/UIElement'; import { register } from '../core/register';
+export class UISnackbar extends UIElement {
+  static observedAttributes=['open','message','severity','position','duration','closable']; private timer?:number;
+  protected styles():string{return `:host{display:none;position:fixed;z-index:110;inset:auto 1rem 1rem auto}:host([open]){display:block}:host([position=bottom-left]){inset:auto auto 1rem 1rem}:host([position=top-right]){inset:1rem 1rem auto auto}:host([position=top-left]){inset:1rem auto auto 1rem}.bar{display:flex;align-items:center;gap:.75rem;min-width:18rem;max-width:32rem;padding:.75rem 1rem;border-radius:var(--ui-radius-md,.5rem);background:var(--ui-color-surface);color:var(--ui-color-text);border:1px solid var(--ui-color-border,#cbd5e1);box-shadow:0 14px 34px rgb(0 0 0/.28)}:host([severity=success]) .bar{border-left:4px solid var(--ui-color-success,#22c55e)}:host([severity=warning]) .bar{border-left:4px solid var(--ui-color-warning,#f59e0b)}:host([severity=error]) .bar{border-left:4px solid var(--ui-color-error,#ef4444)}button{all:unset;margin-left:auto;cursor:pointer;font-size:1.1rem}`;}
+  protected template():string{return `<div class="bar" role="status" aria-live="polite"><span>${this.getAttr('message')}<slot></slot></span>${this.getBoolAttr('closable')?'<button type="button" aria-label="Dismiss">×</button>':''}</div>`;}
+  protected onRendered():void{window.clearTimeout(this.timer);this.$('button')?.addEventListener('click',()=>this.close('dismiss'));if(this.getBoolAttr('open')&&this.getNumAttr('duration',0)>0)this.timer=window.setTimeout(()=>this.close('timeout'),this.getNumAttr('duration'));}
+  protected onDisconnected():void{window.clearTimeout(this.timer);} private close(reason:string):void{this.removeAttribute('open');this.emit('ui-close',{reason});}
+}
+register('ui-snackbar',UISnackbar);

@@ -10,3 +10,4 @@ export * from './navigation/index';
 export * from './surfaces/index';
 export * from './layout/index';
 export * from './utils/index';
+export * from './workbench/index';

@@ -102,3 +102,4 @@ export { UiAccordion, UiAccordionItem, UiPaper } from './surfaces';
 
 // --- Utils ────────────────────────────────────────────────────────────
 export { onMediaQuery, debounce, onClickOutside } from './utils';
+export * from './workbench';

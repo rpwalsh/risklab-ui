@@ -1,5 +1,5 @@
 import { createRequire } from 'node:module';
-import { mkdtemp, mkdir, rm, access, readFile } from 'node:fs/promises';
+import { mkdtemp, mkdir, rm, access, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
 import { fileURLToPath } from 'node:url';
@@ -12,6 +12,7 @@ const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 
 const workspaceSpecs = [
   { name: '@risklab/ui', workspace: 'packages/ui' },
+  { name: '@risklab/ui-data', workspace: 'packages/ui-data' },
   { name: '@risklab/workbench', workspace: 'packages/workbench' },
   { name: '@risklab/ui-vanilla', workspace: 'ui/vanilla' },
   { name: '@risklab/ui-react', workspace: 'ui/react' },
@@ -23,14 +24,14 @@ const workspaceSpecs = [
 ];
 
 const uiPackageNames = workspaceSpecs.map((spec) => spec.name);
-const uiFrameworkNames = uiPackageNames.filter((name) => name !== '@risklab/ui');
+const uiFrameworkNames = uiPackageNames.filter((name) => name.startsWith('@risklab/ui-') && name !== '@risklab/ui-data');
 
 const scenarios = [
   {
     name: 'ui-core-only',
-    install: ['@risklab/ui'],
+    install: ['@risklab/ui-data', '@risklab/ui'],
     resolve: ['@risklab/ui', '@risklab/ui/vanilla', '@risklab/ui/auto', '@risklab/ui/css'],
-    installed: ['@risklab/ui'],
+    installed: ['@risklab/ui-data', '@risklab/ui'],
     missing: ['@risklab/ui-react', 'react', 'react-dom'],
   },
   {
@@ -42,7 +43,7 @@ const scenarios = [
   },
   {
     name: 'ui-framework-packages',
-    install: uiFrameworkNames,
+    install: ['@risklab/ui-data', ...uiFrameworkNames],
     resolve: uiFrameworkNames,
     installed: [
       ...uiFrameworkNames,
@@ -66,13 +67,13 @@ async function run() {
 
   try {
     await assertNoInstallDependencies();
+    await execNpm(['run', 'build:all'], repoRoot);
 
     const tarballs = new Map();
 
     for (const spec of workspaceSpecs) {
       tarballs.set(spec.name, await packWorkspace(spec, tarballDir));
     }
-
     for (const scenario of scenarios) {
       await runScenario({ scenario, tarballs, tempRoot });
     }
@@ -105,8 +106,9 @@ async function assertNoInstallDependencies() {
     const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
     const dependencyNames = Object.keys(manifest.dependencies ?? {});
 
-    if (dependencyNames.length > 0) {
-      throw new Error(`${spec.name} declares install dependencies: ${dependencyNames.join(', ')}`);
+    const unexpected = dependencyNames.filter((name) => name !== '@risklab/ui-data');
+    if (unexpected.length > 0) {
+      throw new Error(`${spec.name} declares unexpected install dependencies: ${unexpected.join(', ')}`);
     }
   }
 }
@@ -122,6 +124,7 @@ async function runScenario({ scenario, tarballs, tempRoot }) {
     '--ignore-scripts',
     '--no-audit',
     '--no-fund',
+    'jsdom@^26.0.0',
     ...scenario.install.map((name) => tarballs.get(name)),
   ];
 
@@ -159,7 +162,55 @@ async function runScenario({ scenario, tarballs, tempRoot }) {
   }
 
   const manifest = JSON.parse(await readFile(path.join(projectDir, 'package.json'), 'utf8'));
+  await executeEntrypoints(projectDir, scenario.resolve ?? []);
   console.log(`Verified ${scenario.name}: ${Object.keys(manifest.dependencies ?? {}).length} installed dependencies.`);
+}
+
+async function executeEntrypoints(projectDir, specifiers) {
+  const executable = specifiers.filter((name) => !name.endsWith('/css') && !name.includes('svelte'));
+  await writeFile(path.join(projectDir, 'verify-esm.mjs'), `
+import { JSDOM } from 'jsdom';
+const dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'http://localhost/' });
+for (const key of ['window','document','Document','customElements','HTMLElement','Element','Node','Event','CustomEvent','MutationObserver','ShadowRoot','CSSStyleSheet']) if (key in dom.window) globalThis[key] = dom.window[key];
+const name = process.argv[2];
+const value = await import(name);
+if (!value) throw new Error('Empty ESM entrypoint: '+name);
+`, 'utf8');
+  for (const name of executable) await execNode(['--conditions=browser', 'verify-esm.mjs', name], projectDir);
+  const cjs = executable;
+  await writeFile(path.join(projectDir, 'verify-cjs.cjs'), `
+const { JSDOM } = require('jsdom');
+const dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'http://localhost/' });
+for (const key of ['window','document','Document','customElements','HTMLElement','Element','Node','Event','CustomEvent','MutationObserver','ShadowRoot','CSSStyleSheet']) if (key in dom.window) globalThis[key] = dom.window[key];
+const name = process.argv[2];
+const value = require(name);
+if (!value) throw new Error('Empty CommonJS entrypoint: '+name);
+`, 'utf8');
+  for (const name of cjs) await execNode(['--conditions=browser', 'verify-cjs.cjs', name], projectDir);
+  console.log(`Executed ${executable.length} ESM and ${cjs.length} CommonJS entrypoints.`);
+
+  if (specifiers.some((name) => name.includes('svelte'))) {
+    await writeFile(path.join(projectDir, 'verify-svelte.mjs'), `
+import { readdir, readFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { compile } from 'svelte/compiler';
+const root = join(process.cwd(), 'node_modules', '@risklab', 'ui-svelte', 'dist');
+async function collect(dir) {
+  const files = [];
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    const target = join(dir, entry.name);
+    if (entry.isDirectory()) files.push(...await collect(target));
+    else if (entry.name.endsWith('.svelte')) files.push(target);
+  }
+  return files;
+}
+const files = await collect(root);
+if (!files.length) throw new Error('No packaged Svelte components found.');
+for (const file of files) compile(await readFile(file, 'utf8'), { filename: file, generate: 'client', dev: false });
+console.log('Compiled '+files.length+' installed Svelte components.');
+`, 'utf8');
+    await execNode(['verify-svelte.mjs'], projectDir);
+  }
 }
 
 function isUnexpectedInstallError(error) {
@@ -204,6 +255,17 @@ async function execNpm(args, cwd) {
       const stderrText = stderr ? `\nSTDERR:\n${stderr}` : '';
       reject(new Error(`npm ${args.join(' ')} failed in ${cwd}.${stdoutText}${stderrText}`));
     });
+  });
+}
+
+async function execNode(args, cwd) {
+  return await new Promise((resolve, reject) => {
+    const child = spawn(process.execPath, args, { cwd, stdio: ['ignore', 'pipe', 'pipe'] });
+    let stdout = ''; let stderr = '';
+    child.stdout.on('data', (chunk) => { stdout += String(chunk); });
+    child.stderr.on('data', (chunk) => { stderr += String(chunk); });
+    child.on('error', reject);
+    child.on('close', (code) => code === 0 ? resolve({ stdout, stderr }) : reject(new Error(`node ${args.join(' ')} failed in ${cwd}.\n${stdout}\n${stderr}`)));
   });
 }
 

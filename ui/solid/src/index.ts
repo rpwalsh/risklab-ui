@@ -88,3 +88,4 @@ export type { AccordionContextValue } from './surfaces';
 
 // --- Utils ────────────────────────────────────────────────────────────
 export { createMediaQuery, clickOutside, debounce } from './utils';
+export * from './workbench';

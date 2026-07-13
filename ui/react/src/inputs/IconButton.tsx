@@ -1,4 +1,4 @@
-// @risklab/ui � IconButton component
+// @risklab/ui — IconButton component
 
 import React, {
   forwardRef,
@@ -19,7 +19,7 @@ export interface IconButtonProps
     Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'style' | 'className' | 'color' | 'children'> {
   /** The icon element to render. */
   icon: ReactNode;
-  /** Accessible label � applied as `aria-label`. */
+  /** Accessible label — applied as `aria-label`. */
   label: string;
   /** Visual style variant. */
   variant?: IconButtonVariant;

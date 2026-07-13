@@ -1,4 +1,4 @@
-// @risklab/ui � List component
+// @risklab/ui — List component
 
 import {
   forwardRef,

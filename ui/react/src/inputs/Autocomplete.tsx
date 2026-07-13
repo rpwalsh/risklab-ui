@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import type { SizeVariant } from '../styling/types';
 import { cx, sx } from '../styling';
+import { Icon } from '../data-display/Icon';
 
 export interface AutocompleteOption {
   label: string;
@@ -20,7 +21,7 @@ export interface AutocompleteOption {
 export interface AutocompleteProps<T extends AutocompleteOption = AutocompleteOption> {
   options: T[];
   value?: T | T[] | null;
-  defaultValue?: T | null;
+  defaultValue?: T | T[] | null;
   onChange?: (value: T | T[] | null) => void;
   onInputChange?: (value: string) => void;
   inputValue?: string;
@@ -110,8 +111,14 @@ export function Autocomplete<T extends AutocompleteOption = AutocompleteOption>(
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [internalValue, setInternalValue] = useState<T | T[] | null>(multiple ? [] : defaultValue);
-  const [internalInput, setInternalInput] = useState('');
+  const [internalValue, setInternalValue] = useState<T | T[] | null>(() => {
+    if (multiple) return Array.isArray(defaultValue) ? defaultValue : [];
+    return Array.isArray(defaultValue) ? (defaultValue[0] ?? null) : defaultValue;
+  });
+  const [internalInput, setInternalInput] = useState(() => {
+    const initial = Array.isArray(defaultValue) ? defaultValue[0] : defaultValue;
+    return !multiple && initial ? getOptionLabel(initial) : '';
+  });
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
 
@@ -141,6 +148,15 @@ export function Autocomplete<T extends AutocompleteOption = AutocompleteOption>(
   }, [filteredOptions, groupBy]);
 
   const flatFiltered = filteredOptions;
+
+  const nextEnabledIndex = useCallback((start: number, direction: 1 | -1): number => {
+    if (flatFiltered.length === 0) return -1;
+    for (let offset = 1; offset <= flatFiltered.length; offset += 1) {
+      const candidate = (start + direction * offset + flatFiltered.length) % flatFiltered.length;
+      if (!flatFiltered[candidate]?.disabled) return candidate;
+    }
+    return -1;
+  }, [flatFiltered]);
 
   const openMenu = useCallback(() => {
     if (disabled || readOnly) return;
@@ -181,7 +197,7 @@ export function Autocomplete<T extends AutocompleteOption = AutocompleteOption>(
     const current = selectedValues;
     const newValue = current.filter((_, i) => i !== index);
     if (controlledValue === undefined) setInternalValue(newValue);
-    onChange?.(newValue.length > 0 ? newValue : null);
+    onChange?.(newValue);
   }, [selectedValues, controlledValue, onChange]);
 
   const clearValue = useCallback(() => {
@@ -204,35 +220,48 @@ export function Autocomplete<T extends AutocompleteOption = AutocompleteOption>(
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       if (!isOpen) { openMenu(); return; }
-      setActiveIndex((i) => Math.min(i + 1, flatFiltered.length - 1));
+      setActiveIndex((index) => nextEnabledIndex(index, 1));
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
-      setActiveIndex((i) => Math.max(i - 1, 0));
-    } else if (e.key === 'Enter') {
+      if (!isOpen) { openMenu(); return; }
+      setActiveIndex((index) => nextEnabledIndex(index < 0 ? 0 : index, -1));
+    } else if (e.key === 'Home' && isOpen) {
       e.preventDefault();
+      setActiveIndex(nextEnabledIndex(-1, 1));
+    } else if (e.key === 'End' && isOpen) {
+      e.preventDefault();
+      setActiveIndex(nextEnabledIndex(0, -1));
+    } else if (e.key === 'Enter') {
       if (isOpen && activeIndex >= 0 && flatFiltered[activeIndex]) {
+        e.preventDefault();
         selectOption(flatFiltered[activeIndex]);
       } else if (freeSolo && inputValue) {
+        e.preventDefault();
         const freeOption = { label: inputValue, value: inputValue } as unknown as T;
         selectOption(freeOption);
       }
     } else if (e.key === 'Escape') {
+      if (isOpen) {
+        e.preventDefault();
+        closeMenu();
+      }
+    } else if (e.key === 'Tab' && isOpen) {
       closeMenu();
     } else if (e.key === 'Backspace' && multiple && inputValue === '' && selectedValues.length > 0) {
       removeTag(selectedValues.length - 1);
     }
-  }, [isOpen, activeIndex, flatFiltered, freeSolo, inputValue, multiple, selectedValues, openMenu, closeMenu, selectOption, removeTag]);
+  }, [isOpen, activeIndex, flatFiltered, freeSolo, inputValue, multiple, selectedValues, openMenu, closeMenu, selectOption, removeTag, nextEnabledIndex]);
 
   // Close on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      if (isOpen && containerRef.current && !containerRef.current.contains(e.target as Node)) {
         closeMenu();
       }
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
-  }, [closeMenu]);
+  }, [closeMenu, isOpen]);
 
   const sz = sizeMap[size];
   const hasError = !!error;
@@ -346,7 +375,8 @@ export function Autocomplete<T extends AutocompleteOption = AutocompleteOption>(
               <button
                 type="button"
                 aria-label={`Remove ${getOptionLabel(tag)}`}
-                onClick={(e) => { e.stopPropagation(); removeTag(i); }}
+                disabled={readOnly || disabled}
+                onClick={(e) => { e.stopPropagation(); if (!readOnly && !disabled) removeTag(i); }}
                 className={cx('ui-autocomplete__tag-remove', tagRemoveSx.className)}
               >
                 ✕
@@ -375,7 +405,7 @@ export function Autocomplete<T extends AutocompleteOption = AutocompleteOption>(
           {loading && (
             <span className={cx('ui-autocomplete__spinner', spinnerSx.className)} />
           )}
-          {!disableClearable && !disabled && (multiple ? selectedValues.length > 0 : value != null) && (
+          {!disableClearable && !disabled && !readOnly && (multiple ? selectedValues.length > 0 : value != null) && (
             <button
               type="button"
               aria-label="Clear"
@@ -383,7 +413,7 @@ export function Autocomplete<T extends AutocompleteOption = AutocompleteOption>(
               onClick={(e) => { e.stopPropagation(); clearValue(); }}
               className={cx('ui-autocomplete__clear', iconButtonSx.className)}
             >
-              <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><path d="M12 4L8 8m0 0L4 12m4-4L4 4m4 4l4 4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round"/></svg>
+              <Icon name="close" size={14} />
             </button>
           )}
           <button
@@ -400,7 +430,7 @@ export function Autocomplete<T extends AutocompleteOption = AutocompleteOption>(
             }}
             className={cx('ui-autocomplete__toggle', iconButtonSx.className, sx({ transition: 'transform 150ms', transform: isOpen ? 'rotate(180deg)' : 'rotate(0)' }).className)}
           >
-            <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><path fillRule="evenodd" d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06z"/></svg>
+            <Icon name="arrow-down" size={14} />
           </button>
         </div>
       </div>
@@ -451,7 +481,7 @@ export function Autocomplete<T extends AutocompleteOption = AutocompleteOption>(
                   >
                     {multiple && (
                       <span className={sx({ width: '16px', height: '16px', borderRadius: '4px', border: `2px solid ${isSelected ? 'var(--ui-color-primary)' : 'var(--ui-color-border)'}`, background: isSelected ? 'var(--ui-color-primary)' : 'transparent', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }).className}>
-                        {isSelected && <svg viewBox="0 0 10 10" fill="none" width="10" height="10"><path d="M2 5l2.5 2.5L8 3" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                        {isSelected && <Icon name="check" size={10} color="#fff" />}
                       </span>
                     )}
                     {renderOption ? renderOption(option, { selected: isSelected, inputValue }) : getOptionLabel(option)}

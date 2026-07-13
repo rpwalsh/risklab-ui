@@ -1,4 +1,4 @@
-// @risklab/ui � Table component
+// @risklab/ui — Table component
 
 import {
   forwardRef,

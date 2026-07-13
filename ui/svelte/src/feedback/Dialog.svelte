@@ -41,7 +41,7 @@
     role="dialog"
     aria-modal={modal}
   >
-    <div class="ui-dialog-backdrop" onclick={handleBackdrop}></div>
+    <button type="button" class="ui-dialog-backdrop" aria-label="Close dialog" onclick={handleBackdrop}></button>
     <div class="ui-dialog ui-dialog--{size}">
       {@render children?.()}
     </div>
@@ -62,6 +62,8 @@
     position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.5);
+    border: 0;
+    padding: 0;
   }
   .ui-dialog {
     position: relative;

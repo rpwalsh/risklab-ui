@@ -1,6 +1,7 @@
 {
     "name":  "@risklab/ui-vue",
     "version":  "1.0.0",
+    "type":  "module",
     "description":  "@risklab/ui-vue — Vue 3 component library. Composition API + render functions. Same design token system as @risklab/charts and @risklab/ui-react.",
     "main":  "dist/cjs/index.js",
     "module":  "dist/esm/index.js",
@@ -60,17 +61,16 @@
                   "dist",
                   "README.md",
                   "LICENSE",
-                  "NOTICE",
-                  "LICENSE.txt"
+                  "NOTICE"
               ],
     "funding":  {
                     "type":  "github",
                     "url":  "https://github.com/sponsors/rpwalsh"
                 },
     "scripts":  {
-                    "build":  "tsc -p tsconfig.build.json \u0026\u0026 tsc -p tsconfig.cjs.json \u0026\u0026 node -e \"require(\u0027fs\u0027).cpSync(\u0027src/css/ui.css\u0027,\u0027dist/ui.css\u0027)\"",
+                    "build":  "tsc -p tsconfig.build.json \u0026\u0026 tsc -p tsconfig.cjs.json \u0026\u0026 node ../../tools/build-ui-css.mjs vue \u0026\u0026 node ../../tools/finalize-output.mjs .",
                     "dev":  "tsc -p tsconfig.build.json --watch",
-                    "test":  "vitest run --passWithNoTests",
+                    "test":  "npm run build \u0026\u0026 node ../../tools/test-built-package.mjs .",
                     "test:watch":  "vitest",
                     "clean":  "rimraf dist",
                     "typecheck":  "tsc --noEmit",
@@ -85,7 +85,7 @@
                      "design-system",
                      "risklab"
                  ],
-    "author":  "RiskLab Contributors",
+    "author":  "Ryan Walsh",
     "license":  "Apache-2.0",
     "repository":  {
                        "type":  "git",
@@ -105,6 +105,7 @@
                             "vitest":  "^3.0.0",
                             "vue":  "^3.5.0"
                         },
+    "publishConfig":  { "access": "public" },
     "engines":  {
                     "node":  "\u003e=20.0.0"
                 }

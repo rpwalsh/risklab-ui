@@ -1,7 +1,7 @@
-// @risklab/ui — Shared prop types for the styling system
+// @risklab/ui â€” Shared prop types for the styling system
 
 import type { CSSProperties } from 'react';
-import type { XStyleProp } from './stylex-compat';
+import type { AtomicStyleProp } from './atomic-runtime';
 
 // ---------------------------------------------------------------------------
 // Variant unions
@@ -27,22 +27,22 @@ export type ColorVariant =
 /**
  * Common props inherited by all @risklab/ui components.
  *
- * - `className` — additional CSS class(es)
- * - `style` — inline React CSSProperties
- * - `xstyle` — StyleX / xstyle compatible style prop
- * - `id` — HTML `id` attribute
- * - `testId` — maps to `data-testid` for testing
+ * - `className` â€” additional CSS class(es)
+ * - `style` â€” inline React CSSProperties
+ * - `xstyle` â€” atomic style override prop
+ * - `id` â€” HTML `id` attribute
+ * - `testId` â€” maps to `data-testid` for testing
  */
 export interface BaseProps {
   className?: string;
   style?: CSSProperties;
-  xstyle?: XStyleProp;
+  xstyle?: AtomicStyleProp;
   id?: string;
   testId?: string;
 }
 
 // ---------------------------------------------------------------------------
-// Re-export XStyleProp for convenience
+// Re-export AtomicStyleProp for convenience
 // ---------------------------------------------------------------------------
 
-export type { XStyleProp };
+export type { AtomicStyleProp };

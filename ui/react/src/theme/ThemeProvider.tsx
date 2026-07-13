@@ -1,4 +1,4 @@
-// @risklab/ui � Theme Provider
+// @risklab/ui — Theme Provider
 // Injects all tokens as CSS custom properties (--ui-*) on a wrapping div.
 
 import {
@@ -41,7 +41,7 @@ export function useTheme(): ThemeContextValue {
 }
 
 // ---------------------------------------------------------------------------
-// Helpers � token ? CSS custom properties
+// Helpers — token ? CSS custom properties
 // ---------------------------------------------------------------------------
 
 const COLOR_SCALE_KEYS: ReadonlyArray<keyof ColorScale> = [
@@ -105,13 +105,24 @@ function tokensToCSSVars(tokens: ThemeTokens): Record<string, string> {
   // Unitless numbers
   const numericUnitless: ReadonlyArray<keyof ThemeTokens> = [
     'lineHeight',
-    'duration', 'durationFast', 'durationSlow',
     'zDropdown', 'zSticky', 'zModal', 'zToast', 'zTooltip',
   ];
   for (const key of numericUnitless) {
     const val = tokens[key];
     if (typeof val === 'number') {
       vars[`--ui-${camelToDash(key)}`] = String(val);
+    }
+  }
+
+  // Transition durations are stored as numbers in the theme contract and
+  // serialized with their semantic CSS unit.
+  const durations: ReadonlyArray<keyof ThemeTokens> = [
+    'duration', 'durationFast', 'durationSlow',
+  ];
+  for (const key of durations) {
+    const val = tokens[key];
+    if (typeof val === 'number') {
+      vars[`--ui-${camelToDash(key)}`] = `${val}ms`;
     }
   }
 
@@ -127,7 +138,7 @@ function camelToDash(str: string): string {
 // ---------------------------------------------------------------------------
 
 function resolveSystemMode(): 'light' | 'dark' {
-  if (typeof window === 'undefined') return 'light';
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return 'light';
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 

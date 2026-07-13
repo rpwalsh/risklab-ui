@@ -1,0 +1,9 @@
+import { UIElement } from '../core/UIElement'; import { register } from '../core/register';
+export class UIVirtualList extends UIElement {
+  static observedAttributes=['height','item-height','label']; private _items:unknown[]=[]; private scrollOffset=0;
+  set items(value:unknown[]){this._items=Array.isArray(value)?value:[];this.render();} get items():unknown[]{return this._items;}
+  protected styles():string{return `:host{display:block}.viewport{height:var(--_height,18rem);overflow:auto;border:1px solid var(--ui-color-border,#cbd5e1);border-radius:.5rem}.spacer{position:relative}.item{position:absolute;left:0;right:0;height:var(--_item,2.5rem);display:flex;align-items:center;padding:0 .75rem;border-bottom:1px solid var(--ui-color-border,#cbd5e1);font-size:.875rem}`;}
+  protected template():string{const itemHeight=this.getNumAttr('item-height',40),height=this.getNumAttr('height',288),start=Math.max(0,Math.floor(this.scrollOffset/itemHeight)-2),count=Math.ceil(height/itemHeight)+4,end=Math.min(this.items.length,start+count);const label=(item:unknown,index:number)=>typeof item==='object'&&item!==null?String((item as Record<string,unknown>).label??(item as Record<string,unknown>).name??JSON.stringify(item)):String(item??index);return `<div class="viewport" role="list" aria-label="${this.getAttr('label','Virtual list')}" style="--_height:${height}px;--_item:${itemHeight}px"><div class="spacer" style="height:${this.items.length*itemHeight}px">${this.items.slice(start,end).map((item,offset)=>`<div class="item" role="listitem" style="top:${(start+offset)*itemHeight}px">${label(item,start+offset)}</div>`).join('')}</div></div>`;}
+  protected onRendered():void{const viewport=this.$<HTMLElement>('.viewport');if(viewport)viewport.scrollTop=this.scrollOffset;viewport?.addEventListener('scroll',()=>{this.scrollOffset=viewport.scrollTop;this.render();});}
+}
+register('ui-virtual-list',UIVirtualList);

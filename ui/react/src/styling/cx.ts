@@ -1,4 +1,4 @@
-// @risklab/ui — cx() className merging utility
+// @risklab/ui â€” cx() className merging utility
 // Filters falsy values, deduplicates classes, returns a single string.
 
 type CxInput = string | false | null | undefined | 0 | '';

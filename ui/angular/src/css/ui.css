@@ -560,13 +560,13 @@
 [data-variant="solid-rounded"] .ui-tab { border-radius: var(--ui-radius-md, 8px); border-bottom: none; margin-bottom: 0; }
 /* line variant: -2px margin to overlap the list border */
 [data-variant="line"] .ui-tab { margin-bottom: -2px; }
-/* selected � line variant */
+/* selected — line variant */
 [data-variant="line"] .ui-tab[aria-selected="true"] { border-bottom: 2px solid var(--ui-color-primary, #4f46e5); color: var(--ui-color-primary, #4f46e5); }
-/* selected � soft-rounded */
+/* selected — soft-rounded */
 [data-variant="soft-rounded"] .ui-tab[aria-selected="true"] { background-color: var(--ui-color-primary-subtle, #eef2ff); color: var(--ui-color-primary, #4f46e5); }
-/* selected � solid-rounded */
+/* selected — solid-rounded */
 [data-variant="solid-rounded"] .ui-tab[aria-selected="true"] { background-color: var(--ui-color-primary, #4f46e5); color: #fff; }
-/* selected � enclosed */
+/* selected — enclosed */
 [data-variant="enclosed"] .ui-tab[aria-selected="true"] { background-color: var(--ui-color-primary-subtle, #eef2ff); color: var(--ui-color-primary, #4f46e5); }
 /* per-color overrides for selected state */
 [data-color="secondary"][data-variant="line"] .ui-tab[aria-selected="true"]          { border-bottom-color: var(--ui-color-secondary, #6366f1); color: var(--ui-color-secondary, #6366f1); }

@@ -1,4 +1,4 @@
-// @risklab/ui � Slider component
+// @risklab/ui — Slider component
 
 import React, {
   forwardRef,

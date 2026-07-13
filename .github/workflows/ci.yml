@@ -30,6 +30,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
       - name: Lint
         run: npm run lint
 
@@ -48,6 +51,9 @@ jobs:
       - name: Smoke test packed installs
         run: npm run smoke:install
 
+      - name: Browser tests
+        run: npm run test:browser
+
   publish-dry-run:
     name: Publish Dry Run
     runs-on: ubuntu-latest
@@ -60,8 +66,9 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npx playwright install --with-deps chromium
       - run: npm run release:check
       - run: |
-          for workspace in ui/vanilla ui/react ui/vue ui/svelte ui/angular ui/lit ui/solid packages/ui packages/workbench; do
+          for workspace in packages/ui-data ui/vanilla packages/ui ui/react ui/vue ui/svelte ui/angular ui/lit ui/solid packages/workbench; do
             npm publish --dry-run --workspace="$workspace"
           done

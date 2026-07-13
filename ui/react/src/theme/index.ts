@@ -1,4 +1,4 @@
-// @risklab/ui — Theme barrel export
+// @risklab/ui â€” Theme barrel export
 
 export { lightTheme } from './defaultTheme';
 export { darkTheme } from './darkTheme';

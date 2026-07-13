@@ -11,6 +11,8 @@ storybook-static/
 playground/dist/
 dist-playground/
 artifacts/
+test-results/
+playwright-report/
 .codex-tmp/
 .playwright-cli/
 eslint-out.json

@@ -1,4 +1,4 @@
-// @risklab/ui � Avatar component
+// @risklab/ui — Avatar component
 
 import {
   forwardRef,
@@ -24,11 +24,11 @@ export interface AvatarProps
   src?: string;
   /** Alt text for the image. */
   alt?: string;
-  /** Size � a SizeVariant token or a numeric pixel value. */
+  /** Size — a SizeVariant token or a numeric pixel value. */
   size?: SizeVariant | number;
   /** Shape variant. */
   variant?: AvatarVariant;
-  /** Background color � a ColorVariant token or CSS color string. */
+  /** Background color — a ColorVariant token or CSS color string. */
   color?: ColorVariant | (string & {});
   /** Fallback content shown when the image fails to load. */
   fallback?: ReactNode;

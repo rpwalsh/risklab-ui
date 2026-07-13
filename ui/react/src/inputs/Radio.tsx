@@ -1,4 +1,4 @@
-// @risklab/ui � Radio & RadioGroup components
+// @risklab/ui — Radio & RadioGroup components
 
 import {
   forwardRef,
@@ -127,7 +127,7 @@ export const RadioGroup = forwardRef<HTMLFieldSetElement, RadioGroupProps>(
 );
 
 // ---------------------------------------------------------------------------
-// Radio � Types
+// Radio — Types
 // ---------------------------------------------------------------------------
 
 export interface RadioProps

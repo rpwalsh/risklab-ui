@@ -1,6 +1,6 @@
-// @risklab/ui — Styling barrel export
+// @risklab/ui â€” Styling barrel export
 
 export { cx } from './cx';
-export { sx, xstyle } from './stylex-compat';
-export type { StyleXStyles, XStyleProp, SXResult } from './stylex-compat';
+export { sx, xstyle } from './atomic-runtime';
+export type { AtomicStyles, AtomicStyleProp, SXResult } from './atomic-runtime';
 export type { SizeVariant, ColorVariant, BaseProps } from './types';

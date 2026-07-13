@@ -60,17 +60,16 @@
                   "dist",
                   "README.md",
                   "LICENSE",
-                  "NOTICE",
-                  "LICENSE.txt"
+                  "NOTICE"
               ],
     "funding":  {
                     "type":  "github",
                     "url":  "https://github.com/sponsors/rpwalsh"
                 },
     "scripts":  {
-                    "build":  "svelte-package -i src -o dist \u0026\u0026 node -e \"import(\u0027fs\u0027).then(f=\u003ef.cpSync(\u0027src/css/ui.css\u0027,\u0027dist/ui.css\u0027))\"",
+                    "build":  "svelte-package -i src -o dist \u0026\u0026 node ../../tools/build-ui-css.mjs svelte \u0026\u0026 node ../../tools/finalize-esm-output.mjs dist",
                     "dev":  "svelte-package -i src -o dist --watch",
-                    "test":  "vitest run --passWithNoTests",
+                    "test":  "npm run build \u0026\u0026 node ../../tools/test-svelte-package.mjs .",
                     "clean":  "rimraf dist",
                     "typecheck":  "svelte-check --tsconfig ./tsconfig.json",
                     "prepublishOnly":  "npm run clean \u0026\u0026 npm run build"
@@ -84,7 +83,7 @@
                      "design-system",
                      "risklab"
                  ],
-    "author":  "RiskLab Contributors",
+    "author":  "Ryan Walsh",
     "license":  "Apache-2.0",
     "repository":  {
                        "type":  "git",
@@ -106,6 +105,7 @@
                             "typescript":  "^5.7.0",
                             "vitest":  "^3.0.0"
                         },
+    "publishConfig":  { "access": "public" },
     "engines":  {
                     "node":  "\u003e=20.0.0"
                 }

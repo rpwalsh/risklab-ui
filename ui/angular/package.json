@@ -1,6 +1,7 @@
 {
     "name":  "@risklab/ui-angular",
     "version":  "1.0.0",
+    "type":  "module",
     "description":  "@risklab/ui-angular — Angular 17+ standalone component library. Signals-based. Same design token system as @risklab/charts and sibling UI packages.",
     "main":  "dist/cjs/index.js",
     "module":  "dist/esm/index.js",
@@ -60,17 +61,16 @@
                   "dist",
                   "README.md",
                   "LICENSE",
-                  "NOTICE",
-                  "LICENSE.txt"
+                  "NOTICE"
               ],
     "funding":  {
                     "type":  "github",
                     "url":  "https://github.com/sponsors/rpwalsh"
                 },
     "scripts":  {
-                    "build":  "tsc -p tsconfig.build.json \u0026\u0026 tsc -p tsconfig.cjs.json \u0026\u0026 node -e \"require(\u0027fs\u0027).cpSync(\u0027src/css/ui.css\u0027,\u0027dist/ui.css\u0027)\"",
+                    "build":  "tsc -p tsconfig.build.json \u0026\u0026 tsc -p tsconfig.cjs.json \u0026\u0026 node ../../tools/build-ui-css.mjs angular \u0026\u0026 node ../../tools/finalize-output.mjs .",
                     "dev":  "tsc -p tsconfig.build.json --watch",
-                    "test":  "vitest run --passWithNoTests",
+                    "test":  "npm run build \u0026\u0026 node ../../tools/test-built-package.mjs .",
                     "clean":  "rimraf dist",
                     "typecheck":  "tsc --noEmit",
                     "prepublishOnly":  "npm run clean \u0026\u0026 npm run build"
@@ -84,7 +84,7 @@
                      "design-system",
                      "risklab"
                  ],
-    "author":  "RiskLab Contributors",
+    "author":  "Ryan Walsh",
     "license":  "Apache-2.0",
     "repository":  {
                        "type":  "git",
@@ -109,6 +109,7 @@
                             "zone.js":  "^0.15.0",
                             "rxjs":  "^7.8.0"
                         },
+    "publishConfig":  { "access": "public" },
     "engines":  {
                     "node":  "\u003e=20.0.0"
                 }

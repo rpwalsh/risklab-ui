@@ -33,3 +33,17 @@ export type { MasonryProps } from './Masonry';
 
 export { SplitPane } from './SplitPane';
 export type { SplitPaneProps, ResizableDirection } from './SplitPane';
+
+export { ViewportLayout, ViewportLayoutArea } from './ViewportLayout';
+export type { ViewportLayoutProps, ViewportLayoutAreaProps } from './ViewportLayout';
+
+export {
+  viewportLayoutPresets,
+  getViewportLayoutPreset,
+  listViewportLayoutPresets,
+} from './layoutPresets';
+export type {
+  ViewportLayoutPreset,
+  ViewportLayoutPresetId,
+  ViewportLayoutAreaDefinition,
+} from './layoutPresets';

@@ -1,4 +1,4 @@
-// @risklab/ui — Input components barrel export
+// @risklab/ui â€” Input components barrel export
 
 export { Button } from './Button';
 export type { ButtonProps, ButtonVariant } from './Button';

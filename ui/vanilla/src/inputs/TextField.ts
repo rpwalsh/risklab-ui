@@ -134,9 +134,10 @@ export class UITextField extends UIElement {
 
     return `
       <div class="field" part="field">
-        ${label ? `<label part="label">${label}${required ? ' <span aria-hidden="true">*</span>' : ''}</label>` : ''}
+        ${label ? `<label for="control" part="label">${label}${required ? ' <span aria-hidden="true">*</span>' : ''}</label>` : ''}
         <div class="input-wrap">
           <input
+            id="control"
             class="variant-${variant} size-${size}"
             type="${type}"
             ${placeholder ? `placeholder="${placeholder}"` : ''}

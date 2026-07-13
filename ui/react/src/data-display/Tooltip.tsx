@@ -1,4 +1,4 @@
-// @risklab/ui � Tooltip component
+// @risklab/ui — Tooltip component
 
 import React, {
   forwardRef,

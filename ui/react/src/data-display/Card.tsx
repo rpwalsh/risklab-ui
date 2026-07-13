@@ -1,4 +1,4 @@
-// @risklab/ui � Card component
+// @risklab/ui — Card component
 
 import {
   forwardRef,
@@ -42,7 +42,7 @@ export interface CardProps
   variant?: CardVariant;
   /** Enable hover/focus interaction styles. */
   interactive?: boolean;
-  /** Click handler � makes the card focusable. */
+  /** Click handler — makes the card focusable. */
   onClick?: (event: React.MouseEvent<HTMLElement>) => void;
   /** If provided, the card renders as an anchor. */
   href?: string;

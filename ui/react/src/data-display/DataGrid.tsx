@@ -1,22 +1,20 @@
-// @risklab/ui � DataGrid component (composes Table)
+// @risklab/ui - data grid with explicit client/server operation modes.
 
 import React, {
   forwardRef,
-  useState,
-  useMemo,
   useCallback,
   useEffect,
+  useMemo,
+  useRef,
+  useState,
   type CSSProperties,
-  type ReactNode,
   type HTMLAttributes,
+  type ReactNode,
 } from 'react';
 import type { BaseProps } from '../styling/types';
 import { cx } from '../styling/cx';
 import { Table, type Column, type TableSortDirection } from './Table';
-
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
+import { queryData } from '@risklab/ui-data';
 
 export interface SortModelEntry {
   field: string;
@@ -30,54 +28,35 @@ export interface FilterModelEntry {
 }
 
 export interface DataGridColumn<T extends Record<string, unknown>> extends Column<T> {
-  /** Filterable � enables filter UI for this column. */
   filterable?: boolean;
 }
 
 export interface DataGridProps<T extends Record<string, unknown>>
   extends BaseProps,
     Omit<HTMLAttributes<HTMLDivElement>, 'style' | 'className'> {
-  /** Column definitions. */
   columns: DataGridColumn<T>[];
-  /** Row data. */
   rows: T[];
-  /** Rows per page. */
   pageSize?: number;
-  /** Current page (0-indexed). */
   page?: number;
-  /** Page change callback. */
   onPageChange?: (page: number) => void;
-  /** Total number of rows (for server-side pagination). */
   totalRows?: number;
-  /** Current sort model. */
+  paginationMode?: 'client' | 'server';
+  sortingMode?: 'client' | 'server';
+  filteringMode?: 'client' | 'server';
   sortModel?: SortModelEntry[];
-  /** Sort model change callback. */
   onSortModelChange?: (model: SortModelEntry[]) => void;
-  /** Current filter model. */
   filterModel?: FilterModelEntry[];
-  /** Filter model change callback. */
   onFilterModelChange?: (model: FilterModelEntry[]) => void;
-  /** Enable row selection checkboxes. */
   checkboxSelection?: boolean;
-  /** Row height in pixels. */
   rowHeight?: number;
-  /** Header height in pixels. */
   headerHeight?: number;
-  /** Show loading overlay. */
   loading?: boolean;
-  /** Custom row id extractor. */
   getRowId?: (row: T, index: number) => string | number;
-  /** Row click handler. */
   onRowClick?: (row: T, index: number) => void;
-  /** Externally selected row ids. */
   selectedRowIds?: Iterable<string | number>;
-  /** Empty state message. */
+  onSelectedRowIdsChange?: (ids: ReadonlySet<string | number>) => void;
   emptyMessage?: ReactNode;
 }
-
-// ---------------------------------------------------------------------------
-// Pagination bar
-// ---------------------------------------------------------------------------
 
 interface PaginationProps {
   page: number;
@@ -88,98 +67,34 @@ interface PaginationProps {
 
 function Pagination({ page, pageSize, totalRows, onPageChange }: PaginationProps) {
   const totalPages = Math.max(1, Math.ceil(totalRows / pageSize));
-  const start = page * pageSize + 1;
-  const end = Math.min((page + 1) * pageSize, totalRows);
-
+  const safePage = Math.min(page, totalPages - 1);
+  const start = safePage * pageSize + 1;
+  const end = Math.min((safePage + 1) * pageSize, totalRows);
   return (
-    <nav
-      className="ui-datagrid-pagination"
-      role="navigation"
-      aria-label="Pagination"
-    >
-      <span>
-        {totalRows === 0 ? '0 rows' : `${start}�${end} of ${totalRows}`}
-      </span>
+    <nav className="ui-datagrid-pagination" aria-label="Pagination">
+      <span>{totalRows === 0 ? '0 rows' : `${start}-${end} of ${totalRows}`}</span>
       <button
         type="button"
         className="ui-datagrid-pagination-btn"
-        disabled={page <= 0}
-        onClick={() => onPageChange(page - 1)}
+        disabled={safePage <= 0}
+        onClick={() => onPageChange(safePage - 1)}
         aria-label="Previous page"
       >
-        ?
+        Previous
       </button>
-      <span aria-current="page">
-        {page + 1} / {totalPages}
-      </span>
+      <span aria-current="page">{safePage + 1} / {totalPages}</span>
       <button
         type="button"
         className="ui-datagrid-pagination-btn"
-        disabled={page >= totalPages - 1}
-        onClick={() => onPageChange(page + 1)}
+        disabled={safePage >= totalPages - 1}
+        onClick={() => onPageChange(safePage + 1)}
         aria-label="Next page"
       >
-        ?
+        Next
       </button>
     </nav>
   );
 }
-
-// ---------------------------------------------------------------------------
-// Filter row helpers
-// ---------------------------------------------------------------------------
-
-function applyFilters<T extends Record<string, unknown>>(
-  rows: T[],
-  filters: FilterModelEntry[],
-): T[] {
-  if (filters.length === 0) return rows;
-  return rows.filter((row) =>
-    filters.every((f) => {
-      const val = String(row[f.field] ?? '').toLowerCase();
-      const target = f.value.toLowerCase();
-      switch (f.operator) {
-        case 'contains':
-          return val.includes(target);
-        case 'equals':
-          return val === target;
-        case 'startsWith':
-          return val.startsWith(target);
-        case 'endsWith':
-          return val.endsWith(target);
-        default:
-          return true;
-      }
-    }),
-  );
-}
-
-function applySorting<T extends Record<string, unknown>>(
-  rows: T[],
-  sortModel: SortModelEntry[],
-): T[] {
-  if (sortModel.length === 0) return rows;
-  const sorted = [...rows];
-  sorted.sort((a, b) => {
-    for (const { field, sort } of sortModel) {
-      const aVal = a[field];
-      const bVal = b[field];
-      let cmp = 0;
-      if (aVal == null && bVal == null) cmp = 0;
-      else if (aVal == null) cmp = -1;
-      else if (bVal == null) cmp = 1;
-      else if (typeof aVal === 'number' && typeof bVal === 'number') cmp = aVal - bVal;
-      else cmp = String(aVal).localeCompare(String(bVal));
-      if (cmp !== 0) return sort === 'desc' ? -cmp : cmp;
-    }
-    return 0;
-  });
-  return sorted;
-}
-
-// ---------------------------------------------------------------------------
-// DataGrid inner implementation
-// ---------------------------------------------------------------------------
 
 function DataGridInner<T extends Record<string, unknown>>(
   {
@@ -189,9 +104,13 @@ function DataGridInner<T extends Record<string, unknown>>(
     page: controlledPage,
     onPageChange,
     totalRows: externalTotalRows,
+    paginationMode: paginationModeProp,
+    sortingMode = 'client',
+    filteringMode = 'client',
     sortModel: controlledSortModel,
     onSortModelChange,
     filterModel: controlledFilterModel,
+    onFilterModelChange,
     checkboxSelection = false,
     rowHeight,
     headerHeight,
@@ -199,6 +118,7 @@ function DataGridInner<T extends Record<string, unknown>>(
     getRowId,
     onRowClick,
     selectedRowIds,
+    onSelectedRowIdsChange,
     emptyMessage,
     className,
     style,
@@ -208,115 +128,99 @@ function DataGridInner<T extends Record<string, unknown>>(
   }: DataGridProps<T>,
   ref: React.ForwardedRef<HTMLDivElement>,
 ) {
-  // Internal state for uncontrolled usage
   const [internalPage, setInternalPage] = useState(0);
   const [internalSortModel, setInternalSortModel] = useState<SortModelEntry[]>([]);
-  const [internalFilterModel] = useState<FilterModelEntry[]>([]);
-  const [selectedIndices, setSelectedIndices] = useState<Set<number>>(new Set());
+  const [internalFilterModel, setInternalFilterModel] = useState<FilterModelEntry[]>([]);
+  const [internalSelectedIds, setInternalSelectedIds] = useState<Set<string | number>>(new Set());
+  const generatedIds = useRef(new WeakMap<object, string>());
+  const nextGeneratedId = useRef(0);
 
   const page = controlledPage ?? internalPage;
-  const setPage = onPageChange ?? setInternalPage;
+  const paginationMode = paginationModeProp ?? (externalTotalRows === undefined ? 'client' : 'server');
   const sortModel = controlledSortModel ?? internalSortModel;
   const filterModel = controlledFilterModel ?? internalFilterModel;
-
-  const handleSortModelChange = useCallback(
-    (model: SortModelEntry[]) => {
-      if (onSortModelChange) {
-        onSortModelChange(model);
-      } else {
-        setInternalSortModel(model);
-      }
-    },
-    [onSortModelChange],
+  const selectedIds = useMemo(
+    () => selectedRowIds ? new Set(selectedRowIds) : internalSelectedIds,
+    [selectedRowIds, internalSelectedIds],
   );
 
-  // Reset page when sort or filter changes (only for uncontrolled page)
-  const sortKey = sortModel.map(s => `${s.field}:${s.sort}`).join(',');
-  const filterKey = filterModel.map(f => `${f.field}:${f.operator}:${f.value}`).join(',');
+  const changePage = useCallback((next: number) => {
+    if (onPageChange) onPageChange(next);
+    else setInternalPage(next);
+  }, [onPageChange]);
+  const changeSort = useCallback((model: SortModelEntry[]) => {
+    if (onSortModelChange) onSortModelChange(model);
+    else setInternalSortModel(model);
+  }, [onSortModelChange]);
+  const changeFilter = useCallback((model: FilterModelEntry[]) => {
+    if (onFilterModelChange) onFilterModelChange(model);
+    else setInternalFilterModel(model);
+  }, [onFilterModelChange]);
+
+  const sortKey = sortModel.map((item) => `${item.field}:${item.sort}`).join(',');
+  const filterKey = filterModel.map((item) => `${item.field}:${item.operator}:${item.value}`).join(',');
   useEffect(() => {
     if (controlledPage === undefined) setInternalPage(0);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortKey, filterKey]);
+  }, [controlledPage, sortKey, filterKey]);
 
-  // Process data: filter ? sort ? paginate
-  const filtered = useMemo(() => applyFilters(rows, filterModel), [rows, filterModel]);
-  const sorted = useMemo(() => applySorting(filtered, sortModel), [filtered, sortModel]);
-  const totalRows = externalTotalRows ?? sorted.length;
-  const paginated = useMemo(
-    () => sorted.slice(page * pageSize, (page + 1) * pageSize),
-    [sorted, page, pageSize],
-  );
-  const paginatedRowIds = useMemo(
-    () =>
-      paginated.map((row, index) =>
-        getRowId ? getRowId(row, page * pageSize + index) : page * pageSize + index,
-      ),
-    [paginated, getRowId, page, pageSize],
-  );
-  const selectedRowIdSet = useMemo(
-    () => (selectedRowIds ? new Set(selectedRowIds) : null),
-    [selectedRowIds],
+  const processed = useMemo(() => queryData(rows, {
+    filters: filteringMode === 'client' ? filterModel : [],
+    sort: sortingMode === 'client'
+      ? sortModel.map(({ field, sort }) => ({ field, direction: sort }))
+      : [],
+  }).rows, [rows, filterModel, filteringMode, sortModel, sortingMode]);
+  const sorted = processed;
+  const totalRows = paginationMode === 'server' ? (externalTotalRows ?? rows.length) : sorted.length;
+  const visibleRows = useMemo(
+    () => paginationMode === 'client'
+      ? sorted.slice(page * pageSize, (page + 1) * pageSize)
+      : sorted,
+    [sorted, page, pageSize, paginationMode],
   );
 
-  // Map DataGridColumn ? Table Column (add sortable flag)
-  const tableColumns: Column<T>[] = useMemo(
-    () =>
-      columns.map((col) => ({
-        key: col.key,
-        header: col.header,
-        render: col.render,
-        width: col.width,
-        align: col.align,
-        sortable: col.sortable ?? false,
-      })),
-    [columns],
-  );
+  const resolveRowId = useCallback((row: T, index: number): string | number => {
+    if (getRowId) return getRowId(row, page * pageSize + index);
+    if (typeof row.id === 'string' || typeof row.id === 'number') return row.id;
+    const cached = generatedIds.current.get(row);
+    if (cached) return cached;
+    const generated = `risklab-row-${nextGeneratedId.current++}`;
+    generatedIds.current.set(row, generated);
+    return generated;
+  }, [getRowId, page, pageSize]);
+  const visibleIds = useMemo(() => visibleRows.map(resolveRowId), [visibleRows, resolveRowId]);
+  const localSelected = useMemo(() => {
+    const result = new Set<number>();
+    visibleIds.forEach((id, index) => { if (selectedIds.has(id)) result.add(index); });
+    return result;
+  }, [visibleIds, selectedIds]);
 
-  // Current sort for Table
+  const handleRowSelect = useCallback((index: number, selected: boolean) => {
+    const id = visibleIds[index];
+    if (id === undefined) return;
+    const next = new Set(selectedIds);
+    if (selected) next.add(id);
+    else next.delete(id);
+    if (selectedRowIds === undefined) setInternalSelectedIds(next);
+    onSelectedRowIdsChange?.(next);
+  }, [visibleIds, selectedIds, selectedRowIds, onSelectedRowIdsChange]);
+
+  const tableColumns = useMemo<Column<T>[]>(() => columns.map((column) => ({
+    key: column.key,
+    header: column.header,
+    render: column.render,
+    width: column.width,
+    align: column.align,
+    sortable: column.sortable ?? false,
+  })), [columns]);
   const currentSort = sortModel[0];
 
-  const handleTableSort = useCallback(
-    (column: string, direction: TableSortDirection) => {
-      handleSortModelChange([{ field: column, sort: direction }]);
-    },
-    [handleSortModelChange],
-  );
-
-  const handleRowSelect = useCallback(
-    (index: number, selected: boolean) => {
-      setSelectedIndices((prev) => {
-        const next = new Set(prev);
-        // The index here is relative to the paginated slice � map to absolute
-        const absIndex = page * pageSize + index;
-        if (selected) next.add(absIndex);
-        else next.delete(absIndex);
-        return next;
-      });
-    },
-    [page, pageSize],
-  );
-
-  // Map selectedIndices (absolute) to the current page-local set
-  const localSelected = useMemo(() => {
-    const s = new Set<number>();
-    for (let i = 0; i < paginated.length; i++) {
-      if (selectedIndices.has(page * pageSize + i)) s.add(i);
-      if (selectedRowIdSet?.has(paginatedRowIds[i])) s.add(i);
-    }
-    return s;
-  }, [selectedIndices, paginated.length, page, pageSize, selectedRowIdSet, paginatedRowIds]);
-
-  // Base layout lives in ui.css `.ui-datagrid`; only user overrides go inline.
-  const resolvedStyle: CSSProperties | undefined =
-    style || xstyle
-      ? {
-          ...(typeof xstyle === 'object' && !Array.isArray(xstyle) ? xstyle : undefined),
-          ...(Array.isArray(xstyle)
-            ? xstyle.reduce<Record<string, string | number>>((a, s) => (s ? { ...a, ...s } : a), {})
-            : undefined),
-          ...style,
-        }
-      : undefined;
+  const resolvedStyle: CSSProperties | undefined = style || xstyle ? {
+    ...(typeof xstyle === 'object' && !Array.isArray(xstyle) ? xstyle : undefined),
+    ...(Array.isArray(xstyle)
+      ? xstyle.reduce<Record<string, string | number>>((result, item) => item ? { ...result, ...item } : result, {})
+      : undefined),
+    ...style,
+  } : undefined;
 
   return (
     <div
@@ -324,33 +228,51 @@ function DataGridInner<T extends Record<string, unknown>>(
       className={cx('ui-datagrid', className)}
       {...(resolvedStyle ? { style: resolvedStyle } : undefined)}
       data-testid={testId}
-      role="grid"
       aria-busy={loading ? 'true' : undefined}
       aria-rowcount={totalRows}
       {...rest}
     >
+      {columns.some((column) => column.filterable) && (
+        <div className="ui-datagrid-filters" role="group" aria-label="Data filters">
+          {columns.filter((column) => column.filterable).map((column) => {
+            const field = String(column.key);
+            const active = filterModel.find((filter) => filter.field === field);
+            return (
+              <label key={field} className="ui-datagrid-filter">
+                <span>{column.header}</span>
+                <input
+                  type="search"
+                  value={active?.value ?? ''}
+                  aria-label={`Filter ${String(column.header)}`}
+                  onChange={(event) => {
+                    const value = event.currentTarget.value;
+                    const remaining = filterModel.filter((filter) => filter.field !== field);
+                    changeFilter(value
+                      ? [...remaining, { field, operator: active?.operator ?? 'contains', value }]
+                      : remaining);
+                  }}
+                />
+              </label>
+            );
+          })}
+        </div>
+      )}
       <Table<T>
         columns={tableColumns}
-        data={paginated}
+        data={visibleRows}
         sortColumn={currentSort?.field}
         sortDirection={currentSort?.sort}
-        onSort={handleTableSort}
+        onSort={(field: string, direction: TableSortDirection) => changeSort([{ field, sort: direction }])}
         stickyHeader
         hover
         loading={loading}
         emptyMessage={emptyMessage}
-        selectedRows={localSelected.size > 0 ? localSelected : undefined}
+        selectedRows={localSelected.size ? localSelected : undefined}
         onRowSelect={checkboxSelection ? handleRowSelect : undefined}
-        onRowClick={
-          onRowClick
-            ? (row, index) => onRowClick(row, page * pageSize + index)
-            : undefined
-        }
-        getRowKey={
-          getRowId
-            ? (row, index) => getRowId(row, page * pageSize + index)
-            : undefined
-        }
+        onRowClick={onRowClick
+          ? (row, index) => onRowClick(row, page * pageSize + index)
+          : undefined}
+        getRowKey={resolveRowId}
         style={{
           ...(rowHeight != null
             ? { '--ui-table-cell-padding': `${(rowHeight - 20) / 2}px 0.75rem` } as CSSProperties
@@ -360,12 +282,7 @@ function DataGridInner<T extends Record<string, unknown>>(
             : undefined),
         }}
       />
-      <Pagination
-        page={page}
-        pageSize={pageSize}
-        totalRows={totalRows}
-        onPageChange={setPage}
-      />
+      <Pagination page={page} pageSize={pageSize} totalRows={totalRows} onPageChange={changePage} />
     </div>
   );
 }

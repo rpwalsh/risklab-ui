@@ -52,6 +52,9 @@ export { default as Divider } from './layout/Divider.svelte';
 // Utilities
 export { mediaQuery, clickOutside, debounce, clamp } from './utils/index';
 
+// Workbench
+export * from './workbench/index.js';
+
 // Types
 export type {
   SizeVariant,

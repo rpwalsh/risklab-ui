@@ -1,4 +1,4 @@
-// @risklab/ui � Select component
+// @risklab/ui — Select component
 
 import {
   forwardRef,

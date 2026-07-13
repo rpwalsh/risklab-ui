@@ -4,6 +4,11 @@
     "module": "ESNext",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "moduleResolution": "bundler",
+    "baseUrl": "../..",
+    "paths": {
+      "@risklab/ui-vanilla": ["ui/vanilla/src/index.ts"],
+      "@risklab/ui-vanilla/*": ["ui/vanilla/src/*"]
+    },
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,

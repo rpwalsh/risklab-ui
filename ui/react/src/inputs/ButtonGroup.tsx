@@ -1,4 +1,4 @@
-// @risklab/ui — ButtonGroup component
+// @risklab/ui â€” ButtonGroup component
 
 import {
   forwardRef,
@@ -77,7 +77,7 @@ export const ButtonGroup = forwardRef<HTMLDivElement, ButtonGroupProps>(
       flexDirection: isVertical ? 'column' : 'row',
       gap: typeof spacing === 'number' ? `${spacing}px` : spacing,
       '--ui-btngroup-direction': isVertical ? 'column' : 'row',
-      // Remove inner radii via CSS — first/last child keep their corners
+      // Remove inner radii via CSS â€” first/last child keep their corners
       // Middle children get radius 0 on the shared edge.
       // This uses CSS :not(:first-child):not(:last-child) via a data attribute.
       ...(typeof xstyle === 'object' && !Array.isArray(xstyle) ? xstyle : undefined),

@@ -1,7 +1,7 @@
 import React, { forwardRef, useState, useRef, useCallback, useId, useEffect } from 'react';
 import type { ColorVariant } from '../styling/types';
 import { cx } from '../styling/cx';
-import { sx } from '../styling/stylex-compat';
+import { sx } from '../styling/atomic-runtime';
 
 /** Monotonic counter for deterministic file IDs (no Math.random). */
 let _dropFileCounter = 0;

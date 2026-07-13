@@ -1,4 +1,4 @@
-// @risklab/ui � Chip component
+// @risklab/ui — Chip component
 
 import {
   forwardRef,
@@ -18,7 +18,7 @@ export type ChipVariant = 'solid' | 'outlined' | 'soft';
 export interface ChipProps
   extends BaseProps,
     Omit<HTMLAttributes<HTMLSpanElement>, 'style' | 'className' | 'color' | 'onClick'> {
-  /** Chip label � required. */
+  /** Chip label — required. */
   label: string | ReactNode;
   /** Visual variant. */
   variant?: ChipVariant;
@@ -32,7 +32,7 @@ export interface ChipProps
   avatar?: ReactNode;
   /** Custom delete icon. */
   deleteIcon?: ReactNode;
-  /** Called when the delete button is pressed � shows the delete icon. */
+  /** Called when the delete button is pressed — shows the delete icon. */
   onDelete?: () => void;
   /** Make the chip clickable/focusable. */
   onClick?: (event: React.MouseEvent<HTMLSpanElement>) => void;

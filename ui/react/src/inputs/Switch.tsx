@@ -1,4 +1,4 @@
-// @risklab/ui � Switch component
+// @risklab/ui — Switch component
 
 import React, {
   forwardRef,

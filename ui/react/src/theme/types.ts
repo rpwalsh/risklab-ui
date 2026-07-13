@@ -1,5 +1,5 @@
-// @risklab/ui — Theme Type System
-// All design tokens are typed. Compatible with StyleX defineVars() output.
+// @risklab/ui â€” Theme Type System
+// All design tokens are typed and compatible with variable contracts.
 
 export interface ColorScale {
   50: string; 100: string; 200: string; 300: string; 400: string;

@@ -1,6 +1,7 @@
 {
     "name":  "@risklab/ui",
     "version":  "1.0.0",
+    "type":  "module",
     "description":  "@risklab/ui - Standalone vanilla Web Component UI library. Root install for the no-framework package surface.",
     "main":  "dist/cjs/index.js",
     "module":  "dist/esm/index.js",
@@ -61,6 +62,11 @@
                                     "import":  "./dist/esm/utils.js",
                                     "require":  "./dist/cjs/utils.js"
                                 },
+                    "./workbench":  {
+                                        "types":  "./dist/types/workbench/index.d.ts",
+                                        "import":  "./dist/esm/workbench/index.js",
+                                        "require":  "./dist/cjs/workbench/index.js"
+                                    },
                     "./css":  "./dist/ui.css"
                 },
     "sideEffects":  [
@@ -75,17 +81,16 @@
                   "dist",
                   "README.md",
                   "LICENSE",
-                  "NOTICE",
-                  "LICENSE.txt"
+                  "NOTICE"
               ],
     "funding":  {
                     "type":  "github",
                     "url":  "https://github.com/sponsors/rpwalsh"
                 },
     "scripts":  {
-                    "build":  "node ../../tools/build-ui-root.mjs",
+                    "build":  "node ../../tools/build-ui-root.mjs \u0026\u0026 node ../../tools/finalize-output.mjs .",
                     "clean":  "rimraf dist",
-                    "typecheck":  "tsc --noEmit",
+                    "typecheck":  "tsc --noEmit -p ../../ui/vanilla/tsconfig.json",
                     "prepublishOnly":  "npm run clean \u0026\u0026 npm run build"
                 },
     "keywords":  [
@@ -99,7 +104,7 @@
                      "design-system",
                      "risklab"
                  ],
-    "author":  "RiskLab Contributors",
+    "author":  "Ryan Walsh",
     "license":  "Apache-2.0",
     "repository":  {
                        "type":  "git",
@@ -112,6 +117,9 @@
              },
     "publishConfig":  {
                           "access":  "public"
+                      },
+    "dependencies":  {
+                          "@risklab/ui-data":  "^1.0.0"
                       },
     "devDependencies":  {
                             "rimraf":  "^6.0.0",

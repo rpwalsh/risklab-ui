@@ -33,5 +33,8 @@ export * from './surfaces';
 /* ── layout ── */
 export * from './layout';
 
+/* ── workbench ── */
+export * from './workbench';
+
 /* ── utils ── */
 export * from './utils';

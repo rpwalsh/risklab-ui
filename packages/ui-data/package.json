@@ -1,0 +1,39 @@
+{
+  "name": "@risklab/ui-data",
+  "version": "1.0.0",
+  "description": "Framework-neutral query, grouping, aggregation, and view-state engine for RiskLab data interfaces.",
+  "type": "module",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "sideEffects": false,
+  "files": ["dist", "README.md", "LICENSE", "NOTICE"],
+  "scripts": {
+    "build": "rimraf dist && tsc -p tsconfig.build.json && tsc -p tsconfig.cjs.json && node ../../tools/finalize-output.mjs .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "validate": "npm run typecheck && npm run test && npm run build"
+  },
+  "keywords": ["data-grid", "query", "grouping", "aggregation", "virtualization", "risklab"],
+  "author": "Ryan Walsh",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rpwalsh/risklab-ui",
+    "directory": "packages/ui-data"
+  },
+  "publishConfig": { "access": "public" },
+  "engines": { "node": ">=20.0.0" },
+  "devDependencies": {
+    "rimraf": "^6.0.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  }
+}

@@ -51,6 +51,16 @@ function resolveSize(v: string | number | undefined): string | undefined {
   return typeof v === 'number' ? `${v}px` : v;
 }
 
+function compactStyle(style: CSSProperties): CSSProperties {
+  const nextStyle: CSSProperties = {};
+  for (const [key, value] of Object.entries(style)) {
+    if (value !== undefined) {
+      (nextStyle as Record<string, unknown>)[key] = value;
+    }
+  }
+  return nextStyle;
+}
+
 function resolveTemplateColumns(props: GridProps): string | undefined {
   if (props.templateColumns) return props.templateColumns;
   if (props.minChildWidth !== undefined) {
@@ -122,7 +132,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(
       minChildWidth,
     };
 
-    const gridStyle: CSSProperties = {
+    const gridStyle = compactStyle({
       gridTemplateColumns: resolveTemplateColumns(props),
       gridTemplateRows: resolveTemplateRows(props),
       gap: resolveSize(gap),
@@ -135,9 +145,9 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(
       gridAutoColumns: autoCols,
       ...(xstyle as CSSProperties | undefined),
       ...style,
-    };
+    });
 
-    const hasGridStyle = Object.values(gridStyle).some(v => v !== undefined);
+    const hasGridStyle = Object.keys(gridStyle).length > 0;
 
     return (
       <div
@@ -195,7 +205,7 @@ const GridItem = forwardRef<HTMLDivElement, GridItemProps>(
     },
     ref: Ref<HTMLDivElement>,
   ) {
-    const itemStyle: CSSProperties = {
+    const itemStyle = compactStyle({
       gridColumn: colSpan !== undefined
         ? `span ${colSpan}`
         : undefined,
@@ -209,9 +219,9 @@ const GridItem = forwardRef<HTMLDivElement, GridItemProps>(
       gridArea: area,
       ...(xstyle as CSSProperties | undefined),
       ...style,
-    };
+    });
 
-    const hasItemStyle = Object.values(itemStyle).some(v => v !== undefined);
+    const hasItemStyle = Object.keys(itemStyle).length > 0;
 
     return (
       <div
