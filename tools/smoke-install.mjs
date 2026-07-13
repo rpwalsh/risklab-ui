@@ -12,8 +12,6 @@ const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 
 const workspaceSpecs = [
   { name: '@risklab/ui', workspace: 'packages/ui' },
-  { name: '@risklab/ui-data', workspace: 'packages/ui-data' },
-  { name: '@risklab/workbench', workspace: 'packages/workbench' },
   { name: '@risklab/ui-vanilla', workspace: 'ui/vanilla' },
   { name: '@risklab/ui-react', workspace: 'ui/react' },
   { name: '@risklab/ui-vue', workspace: 'ui/vue' },
@@ -24,26 +22,19 @@ const workspaceSpecs = [
 ];
 
 const uiPackageNames = workspaceSpecs.map((spec) => spec.name);
-const uiFrameworkNames = uiPackageNames.filter((name) => name.startsWith('@risklab/ui-') && name !== '@risklab/ui-data');
+const uiFrameworkNames = uiPackageNames.filter((name) => name.startsWith('@risklab/ui-'));
 
 const scenarios = [
   {
     name: 'ui-core-only',
-    install: ['@risklab/ui-data', '@risklab/ui'],
+    install: ['@risklab/ui'],
     resolve: ['@risklab/ui', '@risklab/ui/vanilla', '@risklab/ui/auto', '@risklab/ui/css'],
-    installed: ['@risklab/ui-data', '@risklab/ui'],
+    installed: ['@risklab/ui'],
     missing: ['@risklab/ui-react', 'react', 'react-dom'],
   },
   {
-    name: 'workbench-shell',
-    install: ['@risklab/workbench'],
-    resolve: ['@risklab/workbench', '@risklab/workbench/state', '@risklab/workbench/theme', '@risklab/workbench/css'],
-    installed: ['@risklab/workbench', 'react'],
-    missing: ['@risklab/ui-react', '@risklab/charts-react'],
-  },
-  {
     name: 'ui-framework-packages',
-    install: ['@risklab/ui-data', ...uiFrameworkNames],
+    install: uiFrameworkNames,
     resolve: uiFrameworkNames,
     installed: [
       ...uiFrameworkNames,
@@ -106,9 +97,8 @@ async function assertNoInstallDependencies() {
     const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
     const dependencyNames = Object.keys(manifest.dependencies ?? {});
 
-    const unexpected = dependencyNames.filter((name) => name !== '@risklab/ui-data');
-    if (unexpected.length > 0) {
-      throw new Error(`${spec.name} declares unexpected install dependencies: ${unexpected.join(', ')}`);
+    if (dependencyNames.length > 0) {
+      throw new Error(`${spec.name} declares unexpected install dependencies: ${dependencyNames.join(', ')}`);
     }
   }
 }

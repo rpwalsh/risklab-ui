@@ -1,6 +1,6 @@
 # Release readiness
 
-- Packages: `@risklab/ui-data`, `@risklab/ui`, `@risklab/ui-vanilla`, `@risklab/ui-react`, `@risklab/ui-vue`, `@risklab/ui-svelte`, `@risklab/ui-angular`, `@risklab/ui-lit`, `@risklab/ui-solid`, and `@risklab/workbench`
+- Packages: `@risklab/ui`, `@risklab/ui-vanilla`, `@risklab/ui-react`, `@risklab/ui-vue`, `@risklab/ui-svelte`, `@risklab/ui-angular`, `@risklab/ui-lit`, and `@risklab/ui-solid`
 - Version: `1.0.0`
 - Build: `npm run build:all`
 - Validation: `npm run release:check`

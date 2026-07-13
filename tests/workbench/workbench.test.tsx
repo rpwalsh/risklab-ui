@@ -13,7 +13,7 @@ import {
   createSavedWorkbenchView,
   parseSavedWorkbenchView,
   useWorkbench,
-} from '../../packages/workbench/src';
+} from '../../ui/react/src/workbench';
 
 describe('RiskLab workbench package', () => {
   let container: HTMLDivElement;

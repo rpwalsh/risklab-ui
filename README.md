@@ -1,14 +1,13 @@
 # RiskLab UI
 
 RiskLab UI is the split-repo home for RiskLab's application-shell and UI
-packages. This repo owns the shared UI primitives, the React workbench shell,
+packages. This repo owns the shared UI primitives, analytical application shells,
 and the framework adapters that sit under the public demo site at
 `https://rpwalsh.github.io/`.
 
 ## Packages
 
 - `@risklab/ui`: vanilla and Web Component UI surface
-- `@risklab/workbench`: React-first analytical shell and coordinated state
 - `@risklab/ui-react`: recommended React component package
 - `@risklab/ui-vue`, `@risklab/ui-svelte`, `@risklab/ui-angular`,
   `@risklab/ui-lit`, `@risklab/ui-solid`: framework-specific adapters
@@ -17,7 +16,7 @@ and the framework adapters that sit under the public demo site at
 
 | Use case | Install |
 | --- | --- |
-| React workbench | `npm install @risklab/workbench @risklab/charts @risklab/charts-react` |
+| React analytical UI | `npm install @risklab/ui-react` |
 | React UI | `npm install @risklab/ui-react` |
 | Vanilla or Web Components | `npm install @risklab/ui` |
 | Other frameworks | install the matching `@risklab/ui-*` package |

@@ -1,5 +1,5 @@
 import React, { useMemo, type HTMLAttributes } from 'react';
-import { pivotData, type AggregateOperation } from '@risklab/ui-data';
+import { pivotData, type AggregateOperation } from './dataEngine';
 import type { BaseProps } from '../styling/types';
 import { cx } from '../styling/cx';
 

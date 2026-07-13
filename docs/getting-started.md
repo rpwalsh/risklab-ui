@@ -6,7 +6,7 @@ This guide is the fastest honest path to a first successful RiskLab UI install.
 
 | If you are building | Install |
 | --- | --- |
-| React analytical workbench | `npm install @risklab/workbench @risklab/charts @risklab/charts-react` |
+| React analytical UI | `npm install @risklab/ui-react` |
 | React UI | `npm install @risklab/ui-react` |
 | Vanilla or Web Components UI | `npm install @risklab/ui` |
 | Vue, Svelte, Angular, Lit, Solid | install the matching `@risklab/ui-*` package |
@@ -14,7 +14,7 @@ This guide is the fastest honest path to a first successful RiskLab UI install.
 ## React workbench quick start
 
 ```tsx
-import "@risklab/workbench/css";
+import "@risklab/ui-react/css";
 import { Chart } from "@risklab/charts-react";
 import {
   EntityInspector,
@@ -25,7 +25,7 @@ import {
   WorkbenchPanel,
   WorkbenchProvider,
   WorkbenchShell,
-} from "@risklab/workbench";
+} from "@risklab/ui-react/workbench";
 
 const series = [
   {
@@ -124,7 +124,7 @@ Reference file: [examples/quickstart-vanilla.ts](../examples/quickstart-vanilla.
 
 ## Package notes
 
-- `@risklab/workbench` is the recommended shell, layout, and coordinated-state layer for serious React analytical apps.
+- `@risklab/ui-react/workbench` provides the shell, layout, and coordinated-state layer for serious React analytical apps.
 - `@risklab/ui` is the default vanilla package.
 - `@risklab/ui-vanilla` is the explicit alias when you want package naming symmetry.
 - `@risklab/ui-react` is the recommended React UI entrypoint.

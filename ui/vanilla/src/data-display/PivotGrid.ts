@@ -1,4 +1,4 @@
-import { pivotData, type AggregateOperation } from '@risklab/ui-data';
+import { pivotData, type AggregateOperation } from './pivotEngine';
 import { UIElement } from '../core/UIElement';
 import { register } from '../core/register';
 

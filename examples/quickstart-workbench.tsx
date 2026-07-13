@@ -1,4 +1,4 @@
-import "@risklab/workbench/css";
+import "@risklab/ui-react/css";
 import { Chart } from "@risklab/charts-react";
 import {
   EntityInspector,
@@ -9,7 +9,7 @@ import {
   WorkbenchPanel,
   WorkbenchProvider,
   WorkbenchShell,
-} from "@risklab/workbench";
+} from "@risklab/ui-react/workbench";
 
 const series = [
   {

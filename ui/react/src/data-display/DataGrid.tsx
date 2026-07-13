@@ -14,7 +14,7 @@ import React, {
 import type { BaseProps } from '../styling/types';
 import { cx } from '../styling/cx';
 import { Table, type Column, type TableSortDirection } from './Table';
-import { queryData } from '@risklab/ui-data';
+import { queryData } from './dataEngine';
 
 export interface SortModelEntry {
   field: string;

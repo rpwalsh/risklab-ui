@@ -8,10 +8,9 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'lcov', 'json-summary'],
-      include: ['packages/ui/src/**/*.ts', 'packages/workbench/src/**/*.{ts,tsx}', 'ui/**/*.{ts,tsx}'],
+      include: ['packages/ui/src/**/*.ts', 'ui/**/*.{ts,tsx}'],
       exclude: [
         'packages/ui/src/index.ts',
-        'packages/workbench/src/index.ts',
         'ui/**/src/index.ts',
         'ui/**/dist/**',
       ],
