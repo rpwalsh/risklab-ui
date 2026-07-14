@@ -83,16 +83,16 @@
                      "design-system",
                      "risklab"
                  ],
-    "author":  "Ryan Walsh",
+    "author":  "Sarah Walsh",
     "license":  "Apache-2.0",
     "repository":  {
                        "type":  "git",
-                       "url":  "https://github.com/rpwalsh/risklab-ui",
+                       "url":  "https://github.com/devgrrl/risklab-ui",
                        "directory":  "ui/svelte"
                    },
-    "homepage":  "https://rpwalsh.github.io/",
+    "homepage":  "https://devgrrl.github.io/",
     "bugs":  {
-                 "url":  "https://github.com/rpwalsh/risklab-ui/issues"
+                 "url":  "https://github.com/devgrrl/risklab-ui/issues"
              },
     "peerDependencies":  {
                              "svelte":  "\u003e=5.0.0"
