@@ -16,6 +16,16 @@ describe('RiskLab UI custom elements', () => {
     }
   });
 
+  it('connects every documented custom element with a stable empty-state contract', () => {
+    for (const { tag } of UI_COMPONENT_MANIFEST) {
+      const element = document.createElement(tag);
+      document.body.appendChild(element);
+      expect(element.isConnected, `${tag} should connect`).toBe(true);
+      expect(element.shadowRoot, `${tag} should provide an encapsulated UI surface`).not.toBeNull();
+      element.remove();
+    }
+  });
+
   it('clamps and emits number input changes', () => {
     const control = mount<HTMLElement>('<ui-number-input value="9" min="0" max="10" step="2"></ui-number-input>');
     const listener = vi.fn();

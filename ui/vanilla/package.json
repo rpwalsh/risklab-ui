@@ -2,7 +2,7 @@
     "name":  "@risklab/ui-vanilla",
     "version":  "1.0.0",
     "type":  "module",
-    "description":  "@risklab/ui-vanilla — Framework-agnostic Web Component UI library. Custom Elements v1 + Shadow DOM. Zero dependencies. Same design token system as @risklab/charts and @risklab/ui-react.",
+    "description":  "Framework-agnostic Web Component library with accessible controls, analytical data displays, and zero runtime dependencies.",
     "main":  "dist/cjs/index.js",
     "module":  "dist/esm/index.js",
     "types":  "dist/types/index.d.ts",
@@ -82,6 +82,7 @@
                     "dev":  "tsc -p tsconfig.build.json --watch",
                     "test":  "vitest run",
                     "test:watch":  "vitest",
+                    "test:coverage":  "vitest run --coverage",
                     "clean":  "rimraf dist",
                     "typecheck":  "tsc --noEmit",
                     "prepublishOnly":  "npm run clean \u0026\u0026 npm run build"

@@ -34,7 +34,7 @@ jobs:
 
       - name: Publish UI packages
         run: |
-          for workspace in packages/ui-data ui/vanilla packages/ui ui/react ui/vue ui/svelte ui/angular ui/lit ui/solid packages/workbench; do
+          for workspace in ui/vanilla packages/ui ui/react ui/vue ui/svelte ui/angular ui/lit ui/solid; do
             npm publish --workspace="$workspace" --access public --provenance
           done
         env:
@@ -43,9 +43,7 @@ jobs:
       - name: Create release artifacts
         run: |
           mkdir -p artifacts/release
-          npm pack --workspace=packages/ui-data --pack-destination artifacts/release
           npm pack --workspace=packages/ui --pack-destination artifacts/release
-          npm pack --workspace=packages/workbench --pack-destination artifacts/release
           npm pack --workspace=ui/vanilla --pack-destination artifacts/release
           npm pack --workspace=ui/react --pack-destination artifacts/release
           npm pack --workspace=ui/vue --pack-destination artifacts/release

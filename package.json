@@ -17,6 +17,7 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:coverage": "npm run test:coverage --workspace=ui/vanilla",
     "test:browser": "playwright test",
     "check:source": "node tools/check-source.mjs",
     "lint": "eslint packages ui tests tools --ext .ts,.tsx,.js,.mjs",
@@ -40,7 +41,7 @@
     "build:all": "npm run build --workspace=ui/vanilla && npm run build --workspace=packages/ui && npm run build --workspace=ui/react && npm run build --workspace=ui/vue && npm run build --workspace=ui/svelte && npm run build --workspace=ui/angular && npm run build --workspace=ui/lit && npm run build --workspace=ui/solid",
     "pack:all": "npm pack --dry-run --workspace=packages/ui && npm pack --dry-run --workspace=ui/vanilla && npm pack --dry-run --workspace=ui/react && npm pack --dry-run --workspace=ui/vue && npm pack --dry-run --workspace=ui/svelte && npm pack --dry-run --workspace=ui/angular && npm pack --dry-run --workspace=ui/lit && npm pack --dry-run --workspace=ui/solid",
     "smoke:install": "node ./tools/smoke-install.mjs",
-    "release:check": "npm run check:source && npm run lint && npm run typecheck:all && npm run test:all && npm run build:all && npm run test:browser && npm run pack:all && npm run smoke:install"
+    "release:check": "npm run check:source && npm run lint && npm run typecheck:all && npm run test:all && npm run test:coverage && npm run build:all && npm run test:browser && npm run pack:all && npm run smoke:install"
   },
   "keywords": [
     "risklab",
@@ -75,6 +76,7 @@
     "@types/node": "^25.5.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@vitest/coverage-v8": "^3.2.7",
     "eslint": "^9.0.0",
     "eslint-plugin-react-hooks": "^7.0.1",
     "jsdom": "^29.0.0",
@@ -83,7 +85,7 @@
     "rimraf": "^6.0.0",
     "typescript": "^5.7.0",
     "typescript-eslint": "^8.0.0",
-    "vitest": "^3.0.0"
+    "vitest": "^3.2.7"
   },
   "engines": {
     "node": ">=20.0.0"

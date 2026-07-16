@@ -42,6 +42,9 @@ jobs:
       - name: Test package surfaces
         run: npm run test:all
 
+      - name: Enforce runtime coverage
+        run: npm run test:coverage
+
       - name: Build all publishable packages
         run: npm run build:all
 
@@ -69,6 +72,6 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run release:check
       - run: |
-          for workspace in packages/ui-data ui/vanilla packages/ui ui/react ui/vue ui/svelte ui/angular ui/lit ui/solid packages/workbench; do
+          for workspace in ui/vanilla packages/ui ui/react ui/vue ui/svelte ui/angular ui/lit ui/solid; do
             npm publish --dry-run --workspace="$workspace"
           done

@@ -2,7 +2,7 @@
     "name": "@risklab/ui-react",
     "version": "1.0.0",
     "type": "module",
-    "description": "@risklab/ui-react — React component library for building analytical application shells. Same design token system as @risklab/charts and @risklab/ui-vanilla. Zero external runtime dependencies.",
+    "description": "Composable React components for accessible analytical applications, data-heavy workflows, and technical tools.",
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
     "types": "dist/types/index.d.ts",
