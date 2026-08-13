@@ -6,7 +6,7 @@
 - Validation: `npm run release:check`
 - Tarball consumer test: `npm run smoke:install`
 - Release workflow: `.github/workflows/release.yml`
-- License: Apache-2.0 with package-specific `NOTICE` files
+- License: Proprietary (see LICENSE and NOTICE)
 - ESM: all packages
 - CommonJS: all packages except the Svelte-native package
 - Browser support: evergreen browsers; custom-element lifecycle validation runs in Chromium

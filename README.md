@@ -49,7 +49,4 @@ npm run release:check
 
 ## License
 
-Apache-2.0
-
-Redistributions must preserve the applicable copyright, license, and notice
-attributions in `LICENSE` and `NOTICE`.
+Proprietary. Not open source. See `LICENSE` and `NOTICE`.
