@@ -86,16 +86,16 @@
                      "design-system",
                      "risklab"
                  ],
-    "author":  "Sarah Walsh",
+    "author":  "Ryan P. Walsh",
     "license":  "Apache-2.0",
     "repository":  {
                        "type":  "git",
-                       "url":  "https://github.com/devgrrl/risklab-ui",
+                       "url":  "https://github.com/rpwalsh/risklab-ui",
                        "directory":  "ui/lit"
                    },
-    "homepage":  "https://devgrrl.github.io/",
+    "homepage":  "https://rpwalsh.github.io/",
     "bugs":  {
-                 "url":  "https://github.com/devgrrl/risklab-ui/issues"
+                 "url":  "https://github.com/rpwalsh/risklab-ui/issues"
              },
     "peerDependencies":  {
                              "lit":  "\u003e=3.0.0"

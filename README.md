@@ -3,7 +3,7 @@
 RiskLab UI is the split-repo home for RiskLab's application-shell and UI
 packages. This repo owns the shared UI primitives, analytical application shells,
 and the framework adapters that sit under the public demo site at
-`https://devgrrl.github.io/`.
+`https://rpwalsh.github.io/`.
 
 ## Packages
 
@@ -23,7 +23,7 @@ and the framework adapters that sit under the public demo site at
 
 ## Quick links
 
-- Live demos: `https://devgrrl.github.io/`
+- Live demos: `https://rpwalsh.github.io/`
 - Getting started: [docs/getting-started.md](docs/getting-started.md)
 - Design-system guidance: [docs/design-system-integration.md](docs/design-system-integration.md)
 - Security reporting: [SECURITY.md](SECURITY.md)
