@@ -5,6 +5,10 @@ packages. This repo owns the shared UI primitives, analytical application shells
 and the framework adapters that sit under the public demo site at
 `https://rpwalsh.github.io/`.
 
+![RiskLab UI component catalog showing the live-themed Button component with variant properties and markup](docs/screenshots/catalog.png)
+
+Live demo: [rpwalsh.github.io/?view=all](https://rpwalsh.github.io/?view=all)
+
 ## Packages
 
 - `@risklab/ui`: vanilla and Web Component UI surface
